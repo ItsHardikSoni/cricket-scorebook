@@ -1,16 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Stack, DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useCricketStore } from '@/storage/cricketStore';
+import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors } from '@/constants/theme';
+import { useCricketStore } from '@/storage/cricketStore';
+import { AppSplash } from '@/components/AppSplash';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { initStore, settings, isInitialized } = useCricketStore();
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     initStore();
   }, []);
+
+  const handleSplashFinished = useCallback(() => {
+    setShowSplash(false);
+  }, []);
+
+  if (showSplash) {
+    return <AppSplash isStoreReady={isInitialized} onFinished={handleSplashFinished} />;
+  }
 
   const isDark = settings.darkMode;
 
@@ -24,7 +36,7 @@ export default function RootLayout() {
         <Stack.Screen name="match/new" options={{ headerShown: false, presentation: 'modal'}}/>
         <Stack.Screen name="match/[id]" options={{ headerShown: false}}/>
         <Stack.Screen name="team/new" options={{ headerShown: false, presentation: 'modal'}}/>
-        <Stack.Screen name="team/[id]" options={{ headerShown: false}}/>  
+        <Stack.Screen name="team/[id]" options={{ headerShown: false}}/>
       </Stack>
       </SafeAreaView>
     </ThemeProvider>
