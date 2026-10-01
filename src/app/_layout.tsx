@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useCricketStore } from '@/storage/cricketStore';
 import { AppSplash } from '@/components/AppSplash';
+import { Colors } from '@/constants/colors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,7 +29,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? '#090d16' : '#ffffff' }} edges={['top', 'left', 'right', 'bottom']}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? Colors.secondary : Colors.white }} edges={['top', 'left', 'right', 'bottom']}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right'}}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
