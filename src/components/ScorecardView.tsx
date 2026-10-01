@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Match, Team } from '@/types/cricket';
+import { Colors } from '@/constants/colors';
 import { calculateInnings } from '@/engine/scoringEngine';
+import { Match, Team } from '@/types/cricket';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface ScorecardViewProps {
   match: Match;
@@ -20,11 +21,11 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
     match.status === 'innings2' || (match.status === 'completed' && match.innings2) ? 2 : 1
   );
 
-  const bgCard = isDarkMode ? '#1e293b' : '#ffffff';
-  const textPrimary = isDarkMode ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDarkMode ? '#94a3b8' : '#64748b';
+  const bgCard = isDarkMode ? '#1e293b' : Colors.white;
+  const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
+  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
   const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
-  const headerBg = isDarkMode ? '#0f172a' : '#f8fafc';
+  const headerBg = isDarkMode ? Colors.secondary : Colors.white;
   const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
 
   // Innings 1 calculation
@@ -60,7 +61,7 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Innings Selector Tabs */}
-      <View style={[styles.tabsRow, { backgroundColor: isDarkMode ? '#0f172a' : '#f1f5f9' }]}>
+      <View style={[styles.tabsRow, { backgroundColor: isDarkMode ? Colors.secondary : '#f1f5f9' }]}>
         <TouchableOpacity
           style={[
             styles.tabBtn,

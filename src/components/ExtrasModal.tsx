@@ -1,14 +1,15 @@
+import { Colors } from '@/constants/colors';
+import { ExtraType } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { ExtraType } from '@/types/cricket';
 
 interface ExtrasModalProps {
   visible: boolean;
@@ -32,9 +33,9 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
   const [extraValue, setExtraValue] = useState<number>(1);
   const [batRunsValue, setBatRunsValue] = useState<number>(0);
 
-  const bgModal = isDarkMode ? '#1e293b' : '#ffffff';
-  const textPrimary = isDarkMode ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDarkMode ? '#94a3b8' : '#64748b';
+  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
+  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
+  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
   const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
   const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
 

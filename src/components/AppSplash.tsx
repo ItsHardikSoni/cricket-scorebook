@@ -1,4 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { Colors } from '@/constants/colors';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -8,15 +13,10 @@ import {
   Text,
   View,
 } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as SplashScreen from 'expo-splash-screen';
 
 const MINT = '#C8F2D6';
 const MINT_SOFT = '#A9DDBB';
-const WHITE = '#FFFFFF';
 
 type AppSplashProps = {
   isStoreReady: boolean;
@@ -83,11 +83,11 @@ export function AppSplash({ isStoreReady, onFinished }: AppSplashProps) {
       >
         <View style={styles.topRow}>
           <View style={styles.badge}>
-            <Ionicons name="flash" size={13} color={MINT} />
+            <Ionicons name="flash" size={13} color={Colors.primary} />
             <Text style={styles.badgeText}>100% OFFLINE ENGINE</Text>
           </View>
           <View style={styles.badge}>
-            <Ionicons name="cellular" size={13} color={MINT} />
+            <Ionicons name="cellular" size={13} color={Colors.primary} />
             <Text style={styles.badgeText}>No Signal Needed</Text>
           </View>
         </View>
@@ -151,7 +151,7 @@ function FeatureChip({
 }) {
   return (
     <View style={styles.chip}>
-      <Ionicons name={icon} size={14} color={MINT} />
+      <Ionicons name={icon} size={14} color={Colors.primary} />
       <Text style={styles.chipText}>{label}</Text>
     </View>
   );
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     width: 176,
     height: 176,
     borderRadius: 44,
-    backgroundColor: WHITE,
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#042015',
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     height: 118,
     borderRadius: 30,
     overflow: 'hidden',
-    backgroundColor: '#146B45',
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    color: WHITE,
+    color: Colors.white,
     fontSize: 32,
     fontWeight: '800',
     letterSpacing: 0.4,

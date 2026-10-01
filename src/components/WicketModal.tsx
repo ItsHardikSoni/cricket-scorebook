@@ -1,14 +1,15 @@
+import { Colors } from '@/constants/colors';
+import { Player, WicketDetails, WicketType } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Player, WicketDetails, WicketType } from '@/types/cricket';
 
 interface WicketModalProps {
   visible: boolean;
@@ -67,9 +68,9 @@ export const WicketModal: React.FC<WicketModalProps> = ({
     }
   }, [visible, striker.id, availableBatters]);
 
-  const bgModal = isDarkMode ? '#1e293b' : '#ffffff';
-  const textPrimary = isDarkMode ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDarkMode ? '#94a3b8' : '#64748b';
+  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
+  const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
+  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
   const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
   const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
 
@@ -128,7 +129,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                   style={[
                     styles.toggleBtnText,
                     {
-                      color: selectedOutPlayerId === striker.id ? '#ffffff' : textPrimary,
+                      color: selectedOutPlayerId === striker.id ? Colors.white : textPrimary,
                     },
                   ]}
                   numberOfLines={1}
@@ -154,7 +155,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                   style={[
                     styles.toggleBtnText,
                     {
-                      color: selectedOutPlayerId === nonStriker.id ? '#ffffff' : textPrimary,
+                      color: selectedOutPlayerId === nonStriker.id ? Colors.white : textPrimary,
                     },
                   ]}
                   numberOfLines={1}
@@ -182,7 +183,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                             ? '#0369a1'
                             : '#e0f2fe'
                           : isDarkMode
-                          ? '#0f172a'
+                          ? Colors.secondary
                           : '#f1f5f9',
                         borderColor: isSelected ? accentCol : borderCol,
                       },
@@ -224,7 +225,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                         style={[
                           styles.fielderChip,
                           {
-                            backgroundColor: isSelected ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                            backgroundColor: isSelected ? accentCol : isDarkMode ? Colors.secondary : '#f1f5f9',
                             borderColor: isSelected ? accentCol : borderCol,
                           },
                         ]}

@@ -1,14 +1,15 @@
+import { Colors } from '@/constants/colors';
+import { BowlerScorecard, Player } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { BowlerScorecard, Player } from '@/types/cricket';
 
 interface BowlerSelectModalProps {
   visible: boolean;
@@ -31,9 +32,9 @@ export const BowlerSelectModal: React.FC<BowlerSelectModalProps> = ({
   onSelectBowler,
   isDarkMode = false,
 }) => {
-  const bgModal = isDarkMode ? '#1e293b' : '#ffffff';
-  const textPrimary = isDarkMode ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDarkMode ? '#94a3b8' : '#64748b';
+  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
+  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
+  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
   const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
   const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
 

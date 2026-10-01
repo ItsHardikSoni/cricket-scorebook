@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Colors } from '@/constants/colors';
 import { CalculatedInnings, Match } from '@/types/cricket';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface ScoreHeaderProps {
   match: Match;
@@ -23,9 +24,9 @@ export const ScoreHeader: React.FC<ScoreHeaderProps> = ({
   const requiredRunRate =
     ballsRemaining > 0 ? Number(((runsRemaining / (ballsRemaining / 6))).toFixed(2)) : 0;
 
-  const bgCard = isDarkMode ? '#1e293b' : '#ffffff';
-  const textPrimary = isDarkMode ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDarkMode ? '#94a3b8' : '#64748b';
+  const bgCard = isDarkMode ? '#1e293b' : Colors.white;
+  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
+  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
   const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
 
   return (

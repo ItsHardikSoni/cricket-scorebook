@@ -1,7 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Colors } from '@/constants/colors';
 import { ExtraType } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface ScoringPadProps {
   onScoreRuns: (runs: number) => void;
@@ -22,9 +23,9 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
   canUndo,
   isDarkMode = false,
 }) => {
-  const bgPad = isDarkMode ? '#0f172a' : '#f8fafc';
-  const bgButton = isDarkMode ? '#1e293b' : '#ffffff';
-  const textPrimary = isDarkMode ? '#f8fafc' : '#0f172a';
+  const bgPad = isDarkMode ? Colors.secondary : Colors.white;
+  const bgButton = isDarkMode ? '#1e293b' : Colors.white;
+  const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
   const borderCol = isDarkMode ? '#334155' : '#cbd5e1';
 
   return (
@@ -58,16 +59,16 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
             styles.runButton,
             {
               backgroundColor: isDarkMode ? '#064e3b' : '#ecfdf5',
-              borderColor: '#10b981',
+              borderColor: Colors.primary,
             },
           ]}
           onPress={() => onScoreRuns(4)}
           activeOpacity={0.6}
         >
-          <Text style={[styles.runButtonText, { color: isDarkMode ? '#34d399' : '#059669' }]}>
+          <Text style={[styles.runButtonText, { color: isDarkMode ? '#34d399' : Colors.primary }]}>
             4
           </Text>
-          <Text style={[styles.boundaryLabel, { color: isDarkMode ? '#6ee7b7' : '#059669' }]}>FOUR</Text>
+          <Text style={[styles.boundaryLabel, { color: isDarkMode ? '#6ee7b7' : Colors.primary }]}>FOUR</Text>
         </TouchableOpacity>
 
         {/* 6 Boundary (with subtle green accent) */}
@@ -76,16 +77,16 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
             styles.runButton,
             {
               backgroundColor: isDarkMode ? '#064e3b' : '#ecfdf5',
-              borderColor: '#10b981',
+              borderColor: Colors.primary,
             },
           ]}
           onPress={() => onScoreRuns(6)}
           activeOpacity={0.6}
         >
-          <Text style={[styles.runButtonText, { color: isDarkMode ? '#34d399' : '#059669' }]}>
+          <Text style={[styles.runButtonText, { color: isDarkMode ? '#34d399' : Colors.primary }]}>
             6
           </Text>
-          <Text style={[styles.boundaryLabel, { color: isDarkMode ? '#6ee7b7' : '#059669' }]}>SIX</Text>
+          <Text style={[styles.boundaryLabel, { color: isDarkMode ? '#6ee7b7' : Colors.primary }]}>SIX</Text>
         </TouchableOpacity>
       </View>
 
@@ -124,7 +125,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.extraBtn, { backgroundColor: isDarkMode ? '#1e293b' : '#f1f5f9', borderColor: borderCol }]}
+          style={[styles.extraBtn, { backgroundColor: isDarkMode ? '#1e293b' : Colors.white, borderColor: borderCol }]}
           onPress={onOpenCustomExtras}
           activeOpacity={0.7}
         >
@@ -139,7 +140,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
           onPress={onOpenWicketDialog}
           activeOpacity={0.7}
         >
-          <Ionicons name="flame" size={20} color="#ffffff" />
+          <Ionicons name="flame" size={20} color={Colors.white} />
           <Text style={styles.wicketButtonText}>WICKET</Text>
         </TouchableOpacity>
 
@@ -147,7 +148,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
           style={[
             styles.undoButton,
             {
-              backgroundColor: isDarkMode ? '#334155' : '#e2e8f0',
+              backgroundColor: isDarkMode ? '#334155' : Colors.neutral,
               opacity: canUndo ? 1 : 0.4,
             },
           ]}
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   wicketButtonText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 17,
     fontWeight: '900',
     letterSpacing: 1,

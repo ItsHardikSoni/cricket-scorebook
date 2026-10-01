@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Cricket Scorecard",
-    "slug": "cricket-scorecard",
+    "name": "Cricket Scorebook",
+    "slug": "cricket-scorebook",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
-    "scheme": "cricket-scorecard",
+    "scheme": "cricket-scorebook",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/images/logo.png"
