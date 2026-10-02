@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/logo.png",
         "monochromeImage": "./assets/images/logo.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ayushlabs.cricket"
     },
     "web": {
       "output": "static",
