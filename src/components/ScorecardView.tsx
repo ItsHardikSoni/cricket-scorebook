@@ -151,12 +151,15 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
       {/* Innings Summary Banner */}
       <View style={[styles.summaryBanner, { backgroundColor: bgCard, borderColor: borderCol }]}>
         <Text style={[styles.bannerTeam, { color: textPrimary }]}>{activeBattingTeam.name}</Text>
-        <Text style={[styles.bannerScore, { color: textPrimary }]}>
-          {activeCalc.totalRuns}/{activeCalc.totalWickets} ({activeCalc.oversFormatted} OV)
-        </Text>
-        <Text style={[styles.bannerCrr, { color: textSecondary }]}>
-          Run Rate: {activeCalc.runRate.toFixed(2)}
-        </Text>
+        <View style={styles.summaryStats}>
+          <Text style={[styles.bannerScore, { color: textPrimary }]}>
+            {activeCalc.totalRuns}/{activeCalc.totalWickets}
+          </Text>
+          <View style={styles.summaryMetrics}>
+            <Text style={[styles.bannerMetric, { color: textSecondary }]}>OV {activeCalc.oversFormatted}</Text>
+            <Text style={[styles.bannerMetric, { color: textSecondary }]}>RR {activeCalc.runRate.toFixed(2)}</Text>
+          </View>
+        </View>
       </View>
 
       <View style={[styles.tossBanner, { backgroundColor: isDarkMode ? Colors.darkBg : Colors.lightHighlight, borderColor: borderCol }]}>
@@ -329,9 +332,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     marginBottom: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
+    gap: 8,
   },
   tossBanner: {
     flexDirection: 'row',
@@ -418,12 +419,27 @@ const styles = StyleSheet.create({
   bannerTeam: {
     fontSize: 16,
     fontWeight: '700',
+    flexShrink: 1,
+  },
+  summaryStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
   },
   bannerScore: {
     fontSize: 18,
     fontWeight: '800',
+    flexShrink: 0,
   },
-  bannerCrr: {
+  summaryMetrics: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
+    gap: 10,
+  },
+  bannerMetric: {
     fontSize: 12,
     fontWeight: '500',
   },

@@ -1,17 +1,20 @@
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
+import type { Player } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+
+type PlayerRoleEdits = Partial<Pick<Player, 'isCaptain' | 'isViceCaptain' | 'isWicketkeeper'>>;
 
 export default function TeamDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -24,6 +27,8 @@ export default function TeamDetailScreen() {
   const [newPlayerName, setNewPlayerName] = useState('');
   const [editingName, setEditingName] = useState(false);
   const [teamNameInput, setTeamNameInput] = useState(team?.name || '');
+  const [playerRoleEdits, setPlayerRoleEdits] = useState<Record<string, PlayerRoleEdits>>({});
+  const [isSavingChanges, setIsSavingChanges] = useState(false);
 
   const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
   const bgCard = isDark ? Colors.cardBgDark : Colors.white;
@@ -45,10 +50,33 @@ export default function TeamDetailScreen() {
     );
   }
 
-  const handleSaveTeamName = async () => {
-    if (!teamNameInput.trim()) return;
-    await updateTeam(team.id, { name: teamNameInput.trim() });
-    setEditingName(false);
+  const displayPlayers = team.players.map((player) => ({
+    ...player,
+    ...playerRoleEdits[player.id],
+  }));
+
+  const handleSaveChanges = async () => {
+    const name = teamNameInput.trim();
+    if (!name) {
+      Alert.alert('Team Name Required', 'Please enter a team name before saving.');
+      return;
+    }
+
+    const players = team.players.map((player) => ({
+      ...player,
+      ...playerRoleEdits[player.id],
+    }));
+
+    setIsSavingChanges(true);
+    try {
+      await updateTeam(team.id, { name, players });
+      setPlayerRoleEdits({});
+      setEditingName(false);
+    } catch {
+      Alert.alert('Save Failed', 'Team changes could not be saved. Please try again.');
+    } finally {
+      setIsSavingChanges(false);
+    }
   };
 
   const handleAddPlayer = async () => {
@@ -63,32 +91,59 @@ export default function TeamDetailScreen() {
     setNewPlayerName('');
   };
 
-  const handleToggleCaptain = async (playerId: string) => {
-    const isSelecting = !team.players.find((player) => player.id === playerId)?.isCaptain;
-    const updatedPlayers = team.players.map((p) => ({
-      ...p,
-      isCaptain: p.id === playerId ? !p.isCaptain : false, // only one captain
-      isViceCaptain: p.id === playerId && isSelecting ? false : p.isViceCaptain,
-    }));
-    await updateTeam(team.id, { players: updatedPlayers });
+  const handleToggleCaptain = (playerId: string) => {
+    const selectedPlayer = displayPlayers.find((player) => player.id === playerId);
+    if (!selectedPlayer) return;
+    const isSelecting = !selectedPlayer.isCaptain;
+
+    setPlayerRoleEdits((current) => {
+      const next = { ...current };
+      team.players.forEach((player) => {
+        const edits: PlayerRoleEdits = {
+          ...current[player.id],
+          isCaptain: player.id === playerId ? isSelecting : false,
+        };
+        if (player.id === playerId && isSelecting) edits.isViceCaptain = false;
+        next[player.id] = edits;
+      });
+      return next;
+    });
   };
 
-  const handleToggleViceCaptain = async (playerId: string) => {
-    const isSelecting = !team.players.find((player) => player.id === playerId)?.isViceCaptain;
-    const updatedPlayers = team.players.map((p) => ({
-      ...p,
-      isViceCaptain: p.id === playerId ? isSelecting : false,
-      isCaptain: p.id === playerId && isSelecting ? false : p.isCaptain,
-    }));
-    await updateTeam(team.id, { players: updatedPlayers });
+  const handleToggleViceCaptain = (playerId: string) => {
+    const selectedPlayer = displayPlayers.find((player) => player.id === playerId);
+    if (!selectedPlayer) return;
+    const isSelecting = !selectedPlayer.isViceCaptain;
+
+    setPlayerRoleEdits((current) => {
+      const next = { ...current };
+      team.players.forEach((player) => {
+        const edits: PlayerRoleEdits = {
+          ...current[player.id],
+          isViceCaptain: player.id === playerId ? isSelecting : false,
+        };
+        if (player.id === playerId && isSelecting) edits.isCaptain = false;
+        next[player.id] = edits;
+      });
+      return next;
+    });
   };
 
-  const handleToggleWicketkeeper = async (playerId: string) => {
-    const updatedPlayers = team.players.map((p) => ({
-      ...p,
-      isWicketkeeper: p.id === playerId ? !p.isWicketkeeper : false, // only one WK
-    }));
-    await updateTeam(team.id, { players: updatedPlayers });
+  const handleToggleWicketkeeper = (playerId: string) => {
+    const selectedPlayer = displayPlayers.find((player) => player.id === playerId);
+    if (!selectedPlayer) return;
+    const isSelecting = !selectedPlayer.isWicketkeeper;
+
+    setPlayerRoleEdits((current) => {
+      const next = { ...current };
+      team.players.forEach((player) => {
+        next[player.id] = {
+          ...current[player.id],
+          isWicketkeeper: player.id === playerId ? isSelecting : false,
+        };
+      });
+      return next;
+    });
   };
 
   const handleRemove = (playerId: string, playerName: string) => {
@@ -127,7 +182,7 @@ export default function TeamDetailScreen() {
               <Text style={styles.avatarText}>{team.shortName.slice(0, 3)}</Text>
             </View>
 
-            <View style={{ flex: 1 }}>
+            <View style={styles.teamDetails}>
               {editingName ? (
                 <View style={styles.editNameRow}>
                   <TextInput
@@ -135,15 +190,14 @@ export default function TeamDetailScreen() {
                     value={teamNameInput}
                     onChangeText={setTeamNameInput}
                     autoFocus
+                    multiline
+                    textAlignVertical="center"
                   />
-                  <TouchableOpacity onPress={handleSaveTeamName} style={styles.saveNameBtn}>
-                    <Ionicons name="checkmark" size={18} color={Colors.white} />
-                  </TouchableOpacity>
                 </View>
               ) : (
                 <View style={styles.nameRow}>
                   <Text style={[styles.teamName, { color: textPrimary }]}>{team.name}</Text>
-                  <TouchableOpacity onPress={() => setEditingName(true)}>
+                  <TouchableOpacity onPress={() => setEditingName(true)} accessibilityLabel="Edit team name">
                     <Ionicons name="pencil" size={16} color={accentCol} />
                   </TouchableOpacity>
                 </View>
@@ -181,7 +235,7 @@ export default function TeamDetailScreen() {
           ROSTER ({team.players.length})
         </Text>
         <View style={styles.playerList}>
-          {team.players.map((p, idx) => (
+          {displayPlayers.map((p, idx) => (
             <View
               key={p.id}
               style={[styles.playerItem, { backgroundColor: bgCard, borderColor: borderCol }]}
@@ -221,6 +275,7 @@ export default function TeamDetailScreen() {
                     },
                   ]}
                   onPress={() => handleToggleCaptain(p.id)}
+                  disabled={isSavingChanges}
                 >
                   <Text
                     style={[
@@ -240,6 +295,7 @@ export default function TeamDetailScreen() {
                     },
                   ]}
                   onPress={() => handleToggleViceCaptain(p.id)}
+                  disabled={isSavingChanges}
                   accessibilityRole="checkbox"
                   accessibilityState={{ checked: Boolean(p.isViceCaptain) }}
                   accessibilityLabel={`Vice-captain for ${p.name}`}
@@ -268,6 +324,7 @@ export default function TeamDetailScreen() {
                     },
                   ]}
                   onPress={() => handleToggleWicketkeeper(p.id)}
+                  disabled={isSavingChanges}
                 >
                   <Text
                     style={[
@@ -289,6 +346,16 @@ export default function TeamDetailScreen() {
             </View>
           ))}
         </View>
+
+        <TouchableOpacity
+          style={[styles.saveChangesBtn, { backgroundColor: accentCol, opacity: isSavingChanges ? 0.65 : 1 }]}
+          onPress={handleSaveChanges}
+          disabled={isSavingChanges}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="save-outline" size={18} color={Colors.white} />
+          <Text style={styles.saveChangesText}>{isSavingChanges ? 'Saving...' : 'Save Changes'}</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -324,8 +391,12 @@ const styles = StyleSheet.create({
   },
   teamCardHeader: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 14,
+  },
+  teamDetails: {
+    flex: 1,
+    minWidth: 0,
   },
   avatar: {
     width: 50,
@@ -343,32 +414,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    minWidth: 0,
   },
   teamName: {
+    flex: 1,
+    minWidth: 0,
+    flexShrink: 1,
     fontSize: 18,
     fontWeight: '800',
   },
   editNameRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    flex: 1,
+    minWidth: 0,
   },
   nameInput: {
     flex: 1,
-    height: 36,
+    minWidth: 0,
+    minHeight: 44,
     borderWidth: 1,
     borderRadius: 6,
     paddingHorizontal: 8,
+    paddingVertical: 6,
     fontSize: 16,
     fontWeight: '700',
-  },
-  saveNameBtn: {
-    backgroundColor: Colors.primary,
-    width: 32,
-    height: 32,
-    borderRadius: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   teamSub: {
     fontSize: 13,
@@ -484,6 +554,20 @@ const styles = StyleSheet.create({
   tagBtnText: {
     fontSize: 11,
     fontWeight: '800',
+  },
+  saveChangesBtn: {
+    minHeight: 48,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 10,
+    marginTop: 16,
+  },
+  saveChangesText: {
+    color: Colors.white,
+    fontSize: 14,
+    fontWeight: '700',
   },
   emptyContainer: {
     flex: 1,
