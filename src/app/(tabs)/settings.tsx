@@ -3,14 +3,14 @@ import { useCricketStore } from '@/storage/cricketStore';
 import { MatchFormat } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import {
-    Alert,
-    ScrollView,
-    Share,
-    StyleSheet,
-    Switch,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 export default function SettingsScreen() {
   const { settings, updateSettings, resetAllData, matches, teams } = useCricketStore();
@@ -77,7 +77,7 @@ export default function SettingsScreen() {
             <Switch
               value={settings.darkMode}
               onValueChange={(val) => updateSettings({ darkMode: val })}
-              trackColor={{ false: Colors.lightBorderSoft, true: accentCol }}
+              trackColor={{ false: Colors.lightBorderSoft, true: Colors.primary }}
             />
           </View>
         </View>
@@ -142,7 +142,7 @@ export default function SettingsScreen() {
             <Switch
               value={settings.soundVibration}
               onValueChange={(val) => updateSettings({ soundVibration: val })}
-              trackColor={{ false: Colors.lightBorderSoft, true: accentCol }}
+              trackColor={{ false: Colors.lightBorderSoft, true: Colors.primary }}
             />
           </View>
         </View>
