@@ -21,12 +21,12 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
     match.status === 'innings2' || (match.status === 'completed' && match.innings2) ? 2 : 1
   );
 
-  const bgCard = isDarkMode ? '#1e293b' : Colors.white;
+  const bgCard = isDarkMode ? Colors.darkBg : Colors.white;
   const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
   const headerBg = isDarkMode ? Colors.secondary : Colors.white;
-  const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
+  const accentCol = isDarkMode ? Colors.accentDark : Colors.accent;
 
   // Innings 1 calculation
   const innings1BattingTeam = match.innings1.teamBattingId === team1.id ? team1 : team2;
@@ -61,7 +61,7 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Innings Selector Tabs */}
-      <View style={[styles.tabsRow, { backgroundColor: isDarkMode ? Colors.secondary : '#f1f5f9' }]}>
+      <View style={[styles.tabsRow, { backgroundColor: isDarkMode ? Colors.secondary : Colors.lightBg }]}>
         <TouchableOpacity
           style={[
             styles.tabBtn,
@@ -192,7 +192,7 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
             <Text style={[styles.tdStat, { color: textPrimary }]}>{bw.overs}</Text>
             <Text style={[styles.tdStat, { color: textSecondary }]}>{bw.maidens}</Text>
             <Text style={[styles.tdStat, { color: textSecondary }]}>{bw.runsConceded}</Text>
-            <Text style={[styles.tdStatBold, { color: '#0284c7' }]}>{bw.wickets}</Text>
+            <Text style={[styles.tdStatBold, { color: Colors.accent }]}>{bw.wickets}</Text>
             <Text style={[styles.tdSr, { color: textSecondary }]}>{bw.economy.toFixed(2)}</Text>
           </View>
         ))}
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: Colors.lightBorder,
   },
   thBatter: {
     flex: 3,

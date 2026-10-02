@@ -1,17 +1,17 @@
-import React from 'react';
-import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useCricketStore } from '@/storage/cricketStore';
+import { Ionicons } from '@expo/vector-icons';
+import { Tabs } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Colors } from '@/constants/colors';
 
 export default function TabLayout() {
   const { settings } = useCricketStore();
   const isDark = settings.darkMode;
   const insets = useSafeAreaInsets();
-  const bgTab = isDark ? '#0f172a' : '#ffffff';
-  const borderCol = isDark ? '#1e293b' : '#e2e8f0';
-  const activeCol = isDark ? '#38bdf8' : '#0284c7';
-  const inactiveCol = isDark ? '#64748b' : '#94a3b8';
+  const bgTab = isDark ? Colors.darkBgDark : Colors.white;
+  const borderCol = isDark ? Colors.darkBg : Colors.lightBorder;
+  const activeCol = isDark ? Colors.accentDark : Colors.accent;
+  const inactiveCol = isDark ? Colors.neutral : Colors.darkTextSecondary;
 
   return (
     <Tabs

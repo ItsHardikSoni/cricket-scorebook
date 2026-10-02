@@ -15,8 +15,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const MINT = '#C8F2D6';
-const MINT_SOFT = '#A9DDBB';
+
 
 type AppSplashProps = {
   isStoreReady: boolean;
@@ -69,7 +68,7 @@ export function AppSplash({ isStoreReady, onFinished }: AppSplashProps) {
     <View style={styles.root}>
       <StatusBar style="light" />
       <LinearGradient
-        colors={['#23935C', '#1B7A4E', '#157046', '#0F5538']}
+        colors={[Colors.gradientStart, Colors.gradientMid1, Colors.gradientMid2, Colors.gradientEnd]}
         locations={[0, 0.32, 0.68, 1]}
         style={StyleSheet.absoluteFill}
       />
@@ -83,11 +82,11 @@ export function AppSplash({ isStoreReady, onFinished }: AppSplashProps) {
       >
         <View style={styles.topRow}>
           <View style={styles.badge}>
-            <Ionicons name="flash" size={13} color={Colors.primary} />
+            <Ionicons name="flash" size={13} color={Colors.white} />
             <Text style={styles.badgeText}>100% OFFLINE ENGINE</Text>
           </View>
           <View style={styles.badge}>
-            <Ionicons name="cellular" size={13} color={Colors.primary} />
+            <Ionicons name="cellular" size={13} color={Colors.white} />
             <Text style={styles.badgeText}>No Signal Needed</Text>
           </View>
         </View>
@@ -184,7 +183,7 @@ function RadarBackdrop() {
             height: size,
             borderRadius: size / 2,
             borderWidth: StyleSheet.hairlineWidth,
-            borderColor: 'rgba(200, 242, 214, 0.14)',
+            borderColor: Colors.radarCircle,
             top: centerY - size / 2,
             left: width / 2 - size / 2,
           }}
@@ -197,7 +196,7 @@ function RadarBackdrop() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#167A4C',
+    backgroundColor: Colors.primary,
   },
   content: {
     flex: 1,
@@ -209,18 +208,18 @@ const styles = StyleSheet.create({
     width: 420,
     height: 420,
     borderRadius: 210,
-    backgroundColor: 'rgba(90, 190, 120, 0.18)',
+    backgroundColor: Colors.glow,
   },
   axis: {
     position: 'absolute',
     width: StyleSheet.hairlineWidth,
-    backgroundColor: 'rgba(200, 242, 214, 0.08)',
+    backgroundColor: Colors.radarLine,
     top: 0,
   },
   axisH: {
     position: 'absolute',
     height: StyleSheet.hairlineWidth,
-    backgroundColor: 'rgba(200, 242, 214, 0.08)',
+    backgroundColor: Colors.radarLine,
     left: 0,
   },
   topRow: {
@@ -232,15 +231,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: 'rgba(8, 58, 38, 0.38)',
+    backgroundColor: Colors.badgeBg,
     borderWidth: 1,
-    borderColor: 'rgba(200, 242, 214, 0.18)',
+    borderColor: Colors.badgeBorder,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: 18,
   },
   badgeText: {
-    color: MINT,
+    color: Colors.mint,
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.3,
@@ -255,7 +254,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#042015',
+    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 14 },
     shadowOpacity: 0.28,
     shadowRadius: 22,
@@ -276,7 +275,7 @@ const styles = StyleSheet.create({
     height: 132,
   },
   kicker: {
-    color: MINT_SOFT,
+    color: Colors.mintSoft,
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 2.4,
@@ -290,7 +289,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitle: {
-    color: MINT_SOFT,
+    color: Colors.mintSoft,
     fontSize: 16,
     marginTop: 8,
     marginBottom: 22,
@@ -309,22 +308,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: 'rgba(8, 55, 38, 0.42)',
+    backgroundColor: Colors.chipBg,
     borderWidth: 1,
-    borderColor: 'rgba(200, 242, 214, 0.2)',
+    borderColor: Colors.chipBorder,
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
   },
   chipText: {
-    color: MINT,
+    color: Colors.mint,
     fontSize: 13,
     fontWeight: '600',
   },
   statusCard: {
-    backgroundColor: 'rgba(8, 48, 34, 0.42)',
+    backgroundColor: Colors.statusCardBg,
     borderWidth: 1,
-    borderColor: 'rgba(200, 242, 214, 0.14)',
+    borderColor: Colors.statusCardBorder,
     borderRadius: 22,
     paddingHorizontal: 16,
     paddingVertical: 14,
@@ -346,29 +345,29 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#8EE6A8',
+    backgroundColor: Colors.statusDot,
   },
   statusText: {
-    color: MINT,
+    color: Colors.mint,
     fontSize: 13,
     fontWeight: '600',
     flexShrink: 1,
   },
   percentText: {
-    color: MINT,
+    color: Colors.mint,
     fontSize: 16,
     fontWeight: '700',
   },
   track: {
     height: 6,
     borderRadius: 3,
-    backgroundColor: 'rgba(200, 242, 214, 0.18)',
+    backgroundColor: Colors.trackBg,
     overflow: 'hidden',
   },
   fill: {
     height: '100%',
     borderRadius: 3,
-    backgroundColor: '#B6F0C9',
+    backgroundColor: Colors.progressFill,
   },
   footer: {
     flexDirection: 'row',
@@ -377,7 +376,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   footerText: {
-    color: MINT_SOFT,
+    color: Colors.mintSoft,
     fontSize: 12,
     fontWeight: '600',
   },

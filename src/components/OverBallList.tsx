@@ -14,10 +14,10 @@ export const OverBallList: React.FC<OverBallListProps> = ({
   currentOverNumber,
   isDarkMode = false,
 }) => {
-  const bgCard = isDarkMode ? '#1e293b' : Colors.white;
-  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
+  const bgCard = isDarkMode ? Colors.darkBg : Colors.white;
+  const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
 
   const renderBallText = (d: Delivery) => {
     if (d.wicket) {
@@ -46,42 +46,42 @@ export const OverBallList: React.FC<OverBallListProps> = ({
   const getBallStyles = (d: Delivery) => {
     if (d.wicket) {
       return {
-        bg: '#ef4444',
-        text: '#ffffff',
-        border: '#dc2626',
+        bg: Colors.wicketBg,
+        text: Colors.white,
+        border: Colors.wicketBorder,
       };
     }
     if (d.runsBat === 4 || d.runsBat === 6) {
       return {
-        bg: isDarkMode ? '#15803d' : '#22c55e',
-        text: '#ffffff',
-        border: '#16a34a',
+        bg: isDarkMode ? Colors.boundaryBgDark : Colors.boundaryBg,
+        text: Colors.white,
+        border: Colors.boundaryBorder,
       };
     }
     if (d.extraType === 'wide' || d.extraType === 'no_ball') {
       return {
-        bg: isDarkMode ? '#b45309' : '#f59e0b',
-        text: '#ffffff',
-        border: '#d97706',
+        bg: isDarkMode ? Colors.extraBgDark : Colors.extraBg,
+        text: Colors.white,
+        border: Colors.extraBorder,
       };
     }
     if (d.extraType === 'bye' || d.extraType === 'leg_bye') {
       return {
-        bg: isDarkMode ? '#475569' : '#94a3b8',
-        text: '#ffffff',
-        border: '#64748b',
+        bg: isDarkMode ? Colors.byeBgDark : Colors.byeBg,
+        text: Colors.white,
+        border: Colors.byeBorder,
       };
     }
     if (d.runsBat === 0) {
       return {
-        bg: isDarkMode ? '#0f172a' : '#f1f5f9',
+        bg: isDarkMode ? Colors.darkBgDark : Colors.lightBg,
         text: textSecondary,
         border: borderCol,
       };
     }
     // Normal 1, 2, 3 runs
     return {
-      bg: isDarkMode ? '#334155' : '#e2e8f0',
+      bg: isDarkMode ? Colors.darkBorder : Colors.lightBorder,
       text: textPrimary,
       border: borderCol,
     };

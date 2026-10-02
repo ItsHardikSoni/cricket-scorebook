@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { useCricketStore } from '@/storage/cricketStore';
-import { calculateInnings } from '@/engine/scoringEngine';
-import { ExtraType, WicketDetails } from '@/types/cricket';
-import { ScoreHeader } from '@/components/ScoreHeader';
 import { BatsmanBowlerCard } from '@/components/BatsmanBowlerCard';
+import { BowlerSelectModal } from '@/components/BowlerSelectModal';
+import { ExtrasModal } from '@/components/ExtrasModal';
+import { MatchSummaryModal } from '@/components/MatchSummaryModal';
 import { OverBallList } from '@/components/OverBallList';
+import { ScorecardView } from '@/components/ScorecardView';
+import { ScoreHeader } from '@/components/ScoreHeader';
 import { ScoringPad } from '@/components/ScoringPad';
 import { WicketModal } from '@/components/WicketModal';
-import { ExtrasModal } from '@/components/ExtrasModal';
-import { BowlerSelectModal } from '@/components/BowlerSelectModal';
-import { MatchSummaryModal } from '@/components/MatchSummaryModal';
-import { ScorecardView } from '@/components/ScorecardView';
+import { calculateInnings } from '@/engine/scoringEngine';
+import { useCricketStore } from '@/storage/cricketStore';
+import { ExtraType, WicketDetails } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import {
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { Colors } from '@/constants/colors';
 
 export default function LiveScoringScreen() {
   const router = useRouter();
@@ -50,9 +52,9 @@ export default function LiveScoringScreen() {
   // If no active match found, navigate back
   if (!match) {
     return (
-      <View style={[styles.emptyContainer, { backgroundColor: isDark ? '#090d16' : '#f8fafc' }]}>
-        <Ionicons name="alert-circle-outline" size={48} color="#94a3b8" />
-        <Text style={[styles.emptyText, { color: isDark ? '#f8fafc' : '#0f172a' }]}>
+      <View style={[styles.emptyContainer, { backgroundColor: isDark ? Colors.screenBgDark : Colors.screenBgLight }]}>
+        <Ionicons name="alert-circle-outline" size={48} color={Colors.darkTextSecondary} />
+        <Text style={[styles.emptyText, { color: isDark ? Colors.textPrimaryDark : Colors.textPrimaryLight }]}>
           No active match found
         </Text>
         <TouchableOpacity style={styles.goHomeBtn} onPress={() => router.replace('/(tabs)')}>
@@ -236,13 +238,14 @@ export default function LiveScoringScreen() {
     );
   };
 
-  const bgScreen = isDark ? '#090d16' : '#f8fafc';
-  const textPrimary = isDark ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDark ? '#94a3b8' : '#64748b';
-  const borderCol = isDark ? '#1e293b' : '#e2e8f0';
-  const accentCol = isDark ? '#38bdf8' : '#0284c7';
+  const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
+  const textPrimary = isDark ? Colors.textPrimaryDark : Colors.textPrimaryLight;
+  const textSecondary = isDark ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDark ? Colors.darkBg : Colors.lightBorder;
+  const accentCol = isDark ? Colors.accentDark : Colors.accent;
 
   return (
+    <ScrollView>
     <View style={[styles.safeArea, { backgroundColor: bgScreen }]}>
       {/* Top Bar */}
       <View style={[styles.topBar, { borderBottomColor: borderCol }]}>
@@ -401,6 +404,7 @@ export default function LiveScoringScreen() {
         isDarkMode={isDark}
       />
     </View>
+    </ScrollView>
   );
 }
 

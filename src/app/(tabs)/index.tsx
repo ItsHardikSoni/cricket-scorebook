@@ -1,27 +1,27 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { useCricketStore } from '@/storage/cricketStore';
 import { calculateInnings } from '@/engine/scoringEngine';
+import { useCricketStore } from '@/storage/cricketStore';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import {
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { Colors } from '@/constants/colors';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { matches, teams, activeMatchId, setActiveMatch, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
-  const bgScreen = isDark ? '#090d16' : '#f8fafc';
-  const bgCard = isDark ? '#131b2e' : '#ffffff';
-  const textPrimary = isDark ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDark ? '#94a3b8' : '#64748b';
-  const borderCol = isDark ? '#1e293b' : '#e2e8f0';
-  const accentCol = isDark ? '#38bdf8' : '#0284c7';
+  const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
+  const bgCard = isDark ? Colors.cardBgDark : Colors.white;
+  const textPrimary = isDark ? Colors.textPrimaryDark : Colors.textPrimaryLight;
+  const textSecondary = isDark ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDark ? Colors.darkBg : Colors.lightBorder;
+  const accentCol = isDark ? Colors.accentDark : Colors.accent;
 
   // Active match
   const activeMatch = matches.find(

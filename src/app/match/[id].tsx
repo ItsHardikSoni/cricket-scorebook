@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Share } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { useCricketStore } from '@/storage/cricketStore';
 import { ScorecardView } from '@/components/ScorecardView';
 import { calculateInnings } from '@/engine/scoringEngine';
+import { useCricketStore } from '@/storage/cricketStore';
+import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function MatchDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -14,11 +13,11 @@ export default function MatchDetailScreen() {
 
   const match = matches.find((m) => m.id === id);
 
-  const bgScreen = isDark ? '#090d16' : '#f8fafc';
-  const textPrimary = isDark ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDark ? '#94a3b8' : '#64748b';
-  const borderCol = isDark ? '#1e293b' : '#e2e8f0';
-  const accentCol = isDark ? '#38bdf8' : '#0284c7';
+  const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
+  const textPrimary = isDark ? Colors.textPrimaryDark : Colors.textPrimaryLight;
+  const textSecondary = isDark ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDark ? Colors.darkBg : Colors.lightBorder;
+  const accentCol = isDark ? Colors.accentDark : Colors.accent;
 
   if (!match) {
     return (

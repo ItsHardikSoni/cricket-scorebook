@@ -24,10 +24,10 @@ export const ScoreHeader: React.FC<ScoreHeaderProps> = ({
   const requiredRunRate =
     ballsRemaining > 0 ? Number(((runsRemaining / (ballsRemaining / 6))).toFixed(2)) : 0;
 
-  const bgCard = isDarkMode ? '#1e293b' : Colors.white;
-  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
+  const bgCard = isDarkMode ? Colors.darkBg : Colors.white;
+  const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
 
   return (
     <View style={[styles.container, { backgroundColor: bgCard, borderColor: borderCol }]}>
@@ -36,7 +36,7 @@ export const ScoreHeader: React.FC<ScoreHeaderProps> = ({
           <Text style={[styles.teamName, { color: textPrimary }]} numberOfLines={1}>
             {battingTeamName}
           </Text>
-          <Text style={[styles.inningsBadge, { color: isDarkMode ? '#38bdf8' : '#0284c7' }]}>
+          <Text style={[styles.inningsBadge, { color: isDarkMode ? Colors.accentDark : Colors.accent }]}>
             {isInnings2 ? '2nd Innings' : '1st Innings'}
           </Text>
         </View>
@@ -66,7 +66,7 @@ export const ScoreHeader: React.FC<ScoreHeaderProps> = ({
           {isInnings2 && (
             <View style={styles.rateItem}>
               <Text style={[styles.rateLabel, { color: textSecondary }]}>RRR</Text>
-              <Text style={[styles.rateValue, { color: '#e11d48' }]}>
+              <Text style={[styles.rateValue, { color: Colors.wicketBg }]}>
                 {ballsRemaining === 0 && runsRemaining > 0 ? '—' : requiredRunRate.toFixed(2)}
               </Text>
             </View>
@@ -76,11 +76,11 @@ export const ScoreHeader: React.FC<ScoreHeaderProps> = ({
 
       {/* Target & Chasing equation in 2nd Innings */}
       {isInnings2 && (
-        <View style={[styles.targetRow, { backgroundColor: isDarkMode ? '#0f172a' : '#f1f5f9' }]}>
+        <View style={[styles.targetRow, { backgroundColor: isDarkMode ? Colors.darkBgDark : Colors.lightBg }]}>
           <Text style={[styles.targetText, { color: textPrimary }]}>
             Target: <Text style={styles.boldText}>{target}</Text>
           </Text>
-          <Text style={[styles.needText, { color: '#0284c7' }]}>
+          <Text style={[styles.needText, { color: Colors.accent }]}>
             Need <Text style={styles.boldText}>{runsRemaining}</Text> runs in{' '}
             <Text style={styles.boldText}>{ballsRemaining}</Text> balls
           </Text>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 12,
     marginBottom: 8,
-    shadowColor: '#000',
+    shadowColor: Colors.shadowDark,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 6,

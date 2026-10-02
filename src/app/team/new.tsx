@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Alert,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Player } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { Colors } from '@/constants/colors';
+import {
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 
 export default function CreateTeamScreen() {
   const router = useRouter();
   const { createTeam, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
-  const bgScreen = isDark ? '#090d16' : '#f8fafc';
-  const bgCard = isDark ? '#131b2e' : '#ffffff';
-  const textPrimary = isDark ? '#f8fafc' : '#0f172a';
-  const textSecondary = isDark ? '#94a3b8' : '#64748b';
-  const borderCol = isDark ? '#1e293b' : '#e2e8f0';
-  const accentCol = isDark ? '#38bdf8' : '#0284c7';
+  const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
+  const bgCard = isDark ? Colors.cardBgDark : Colors.white;
+  const textPrimary = isDark ? Colors.textPrimaryDark : Colors.textPrimaryLight;
+  const textSecondary = isDark ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDark ? Colors.darkBg : Colors.lightBorder;
+  const accentCol = isDark ? Colors.accentDark : Colors.accent;
 
   const [teamName, setTeamName] = useState('');
   const [shortName, setShortName] = useState('');
@@ -133,7 +134,7 @@ export default function CreateTeamScreen() {
             style={[styles.addPlayerBtn, { backgroundColor: accentCol }]}
             onPress={handleAddPlayer}
           >
-            <Ionicons name="add" size={20} color="#ffffff" />
+            <Ionicons name="add" size={20} color={Colors.white} />
           </TouchableOpacity>
         </View>
 

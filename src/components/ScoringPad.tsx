@@ -24,9 +24,9 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
   isDarkMode = false,
 }) => {
   const bgPad = isDarkMode ? Colors.secondary : Colors.white;
-  const bgButton = isDarkMode ? '#1e293b' : Colors.white;
+  const bgButton = isDarkMode ? Colors.darkBg : Colors.white;
   const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
-  const borderCol = isDarkMode ? '#334155' : '#cbd5e1';
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorderSoft;
 
   return (
     <View style={[styles.container, { backgroundColor: bgPad }]}>
@@ -58,17 +58,17 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
           style={[
             styles.runButton,
             {
-              backgroundColor: isDarkMode ? '#064e3b' : '#ecfdf5',
+              backgroundColor: isDarkMode ? Colors.boundaryAccent : Colors.boundaryAccentLight,
               borderColor: Colors.primary,
             },
           ]}
           onPress={() => onScoreRuns(4)}
           activeOpacity={0.6}
         >
-          <Text style={[styles.runButtonText, { color: isDarkMode ? '#34d399' : Colors.primary }]}>
+          <Text style={[styles.runButtonText, { color: isDarkMode ? Colors.successTextDark : Colors.primary }]}>
             4
           </Text>
-          <Text style={[styles.boundaryLabel, { color: isDarkMode ? '#6ee7b7' : Colors.primary }]}>FOUR</Text>
+          <Text style={[styles.boundaryLabel, { color: isDarkMode ? Colors.boundaryGreen : Colors.primary }]}>FOUR</Text>
         </TouchableOpacity>
 
         {/* 6 Boundary (with subtle green accent) */}
@@ -76,17 +76,17 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
           style={[
             styles.runButton,
             {
-              backgroundColor: isDarkMode ? '#064e3b' : '#ecfdf5',
+              backgroundColor: isDarkMode ? Colors.boundaryAccent : Colors.boundaryAccentLight,
               borderColor: Colors.primary,
             },
           ]}
           onPress={() => onScoreRuns(6)}
           activeOpacity={0.6}
         >
-          <Text style={[styles.runButtonText, { color: isDarkMode ? '#34d399' : Colors.primary }]}>
+          <Text style={[styles.runButtonText, { color: isDarkMode ? Colors.successTextDark : Colors.primary }]}>
             6
           </Text>
-          <Text style={[styles.boundaryLabel, { color: isDarkMode ? '#6ee7b7' : Colors.primary }]}>SIX</Text>
+          <Text style={[styles.boundaryLabel, { color: isDarkMode ? Colors.boundaryGreen : Colors.primary }]}>SIX</Text>
         </TouchableOpacity>
       </View>
 
@@ -125,7 +125,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.extraBtn, { backgroundColor: isDarkMode ? '#1e293b' : Colors.white, borderColor: borderCol }]}
+          style={[styles.extraBtn, { backgroundColor: isDarkMode ? Colors.darkBg : Colors.white, borderColor: borderCol }]}
           onPress={onOpenCustomExtras}
           activeOpacity={0.7}
         >
@@ -136,7 +136,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
       {/* Major Action Row: WICKET & UNDO */}
       <View style={styles.actionRow}>
         <TouchableOpacity
-          style={[styles.wicketButton, { backgroundColor: '#dc2626' }]}
+          style={[styles.wicketButton, { backgroundColor: Colors.wicketRed }]}
           onPress={onOpenWicketDialog}
           activeOpacity={0.7}
         >
@@ -148,7 +148,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
           style={[
             styles.undoButton,
             {
-              backgroundColor: isDarkMode ? '#334155' : Colors.neutral,
+              backgroundColor: isDarkMode ? Colors.darkBorder : Colors.neutral,
               opacity: canUndo ? 1 : 0.4,
             },
           ]}
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: Colors.shadowDark,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.05,
     shadowRadius: 2,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
-    shadowColor: '#dc2626',
+    shadowColor: Colors.wicketShadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,

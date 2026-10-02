@@ -27,11 +27,11 @@ export const BatsmanBowlerCard: React.FC<BatsmanBowlerCardProps> = ({
   const nonStriker = calc.batters.find((b) => b.playerId === nonStrikerId);
   const bowler = calc.bowlers.find((b) => b.playerId === bowlerId);
 
-  const bgCard = isDarkMode ? '#1e293b' : Colors.white;
-  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
-  const strikerHighlight = isDarkMode ? '#0369a1' : '#e0f2fe';
+  const bgCard = isDarkMode ? Colors.darkBg : Colors.white;
+  const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
+  const strikerHighlight = isDarkMode ? Colors.accentHighlight : Colors.lightHighlight;
 
   return (
     <View style={[styles.container, { backgroundColor: bgCard, borderColor: borderCol }]}>
@@ -40,11 +40,11 @@ export const BatsmanBowlerCard: React.FC<BatsmanBowlerCardProps> = ({
         <Text style={[styles.sectionTitle, { color: textSecondary }]}>BATTERS</Text>
         <TouchableOpacity
           onPress={onSwapStrike}
-          style={[styles.swapBtn, { backgroundColor: isDarkMode ? '#334155' : '#f1f5f9' }]}
+          style={[styles.swapBtn, { backgroundColor: isDarkMode ? Colors.darkBorder : Colors.lightBg }]}
           activeOpacity={0.7}
         >
-          <Ionicons name="swap-vertical" size={14} color={isDarkMode ? '#38bdf8' : '#0284c7'} />
-          <Text style={[styles.swapBtnText, { color: isDarkMode ? '#38bdf8' : '#0284c7' }]}>
+          <Ionicons name="swap-vertical" size={14} color={isDarkMode ? Colors.accentDark : Colors.accent} />
+          <Text style={[styles.swapBtnText, { color: isDarkMode ? Colors.accentDark : Colors.accent }]}>
             Swap Strike
           </Text>
         </TouchableOpacity>
@@ -94,11 +94,11 @@ export const BatsmanBowlerCard: React.FC<BatsmanBowlerCardProps> = ({
         <Text style={[styles.sectionTitle, { color: textSecondary }]}>BOWLER</Text>
         <TouchableOpacity
           onPress={onChangeBowler}
-          style={[styles.swapBtn, { backgroundColor: isDarkMode ? '#334155' : '#f1f5f9' }]}
+          style={[styles.swapBtn, { backgroundColor: isDarkMode ? Colors.darkBorder : Colors.lightBg }]}
           activeOpacity={0.7}
         >
-          <Ionicons name="people" size={14} color={isDarkMode ? '#38bdf8' : '#0284c7'} />
-          <Text style={[styles.swapBtnText, { color: isDarkMode ? '#38bdf8' : '#0284c7' }]}>
+          <Ionicons name="people" size={14} color={isDarkMode ? Colors.accentDark : Colors.accent} />
+          <Text style={[styles.swapBtnText, { color: isDarkMode ? Colors.accentDark : Colors.accent }]}>
             Change Bowler
           </Text>
         </TouchableOpacity>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 16,
     marginBottom: 8,
-    shadowColor: '#000',
+    shadowColor: Colors.shadowDark,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 4,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   starText: {
-    color: '#0284c7',
+    color: Colors.star,
     fontWeight: '800',
   },
   playerStats: {

@@ -32,11 +32,11 @@ export const BowlerSelectModal: React.FC<BowlerSelectModalProps> = ({
   onSelectBowler,
   isDarkMode = false,
 }) => {
-  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
-  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
-  const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
+  const bgModal = isDarkMode ? Colors.darkBg : Colors.white;
+  const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
+  const accentCol = isDarkMode ? Colors.accentDark : Colors.accent;
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -66,7 +66,7 @@ export const BowlerSelectModal: React.FC<BowlerSelectModalProps> = ({
                   style={[
                     styles.playerItem,
                     {
-                      backgroundColor: isDarkMode ? '#0f172a' : '#f8fafc',
+                      backgroundColor: isDarkMode ? Colors.darkBgDark : Colors.lightBgSoft,
                       borderColor: borderCol,
                       opacity: isLastOverBowler ? 0.45 : 1,
                     },
@@ -111,7 +111,7 @@ export const BowlerSelectModal: React.FC<BowlerSelectModalProps> = ({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: Colors.backdrop,
     justifyContent: 'flex-end',
   },
   modalCard: {

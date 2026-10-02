@@ -33,11 +33,11 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
   const [extraValue, setExtraValue] = useState<number>(1);
   const [batRunsValue, setBatRunsValue] = useState<number>(0);
 
-  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
-  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
-  const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
+  const bgModal = isDarkMode ? Colors.darkBg : Colors.white;
+  const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
+  const accentCol = isDarkMode ? Colors.accentDark : Colors.accent;
 
   const handleSelectType = (type: ExtraType) => {
     setSelectedType(type);
@@ -97,7 +97,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                     style={[
                       styles.typeBtn,
                       {
-                        backgroundColor: isSelected ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                        backgroundColor: isSelected ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                         borderColor: isSelected ? accentCol : borderCol,
                       },
                     ]}
@@ -106,7 +106,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                     <Text
                       style={[
                         styles.typeBtnText,
-                        { color: isSelected ? '#ffffff' : textPrimary },
+                        { color: isSelected ? Colors.white : textPrimary },
                       ]}
                     >
                       {labels[type]}
@@ -130,7 +130,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                         styles.valuePill,
                         {
                           backgroundColor:
-                            extraValue === val ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                            extraValue === val ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                           borderColor: extraValue === val ? accentCol : borderCol,
                         },
                       ]}
@@ -139,7 +139,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                       <Text
                         style={[
                           styles.valuePillText,
-                          { color: extraValue === val ? '#ffffff' : textPrimary },
+                          { color: extraValue === val ? Colors.white : textPrimary },
                         ]}
                       >
                         {val === 1 ? '1 (Wide only)' : val === 5 ? '5 (Wd + 4)' : `+${val - 1} runs`}
@@ -164,7 +164,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                         styles.valuePill,
                         {
                           backgroundColor:
-                            batRunsValue === batRuns ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                            batRunsValue === batRuns ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                           borderColor: batRunsValue === batRuns ? accentCol : borderCol,
                         },
                       ]}
@@ -176,7 +176,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                       <Text
                         style={[
                           styles.valuePillText,
-                          { color: batRunsValue === batRuns ? '#ffffff' : textPrimary },
+                          { color: batRunsValue === batRuns ? Colors.white : textPrimary },
                         ]}
                       >
                         {batRuns === 0 ? '0' : `+${batRuns}`}
@@ -199,7 +199,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                         styles.valuePill,
                         {
                           backgroundColor:
-                            extraValue === val ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                            extraValue === val ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                           borderColor: extraValue === val ? accentCol : borderCol,
                         },
                       ]}
@@ -208,7 +208,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
                       <Text
                         style={[
                           styles.valuePillText,
-                          { color: extraValue === val ? '#ffffff' : textPrimary },
+                          { color: extraValue === val ? Colors.white : textPrimary },
                         ]}
                       >
                         {val}
@@ -220,7 +220,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
             )}
 
             {/* Summary callout */}
-            <View style={[styles.summaryBox, { backgroundColor: isDarkMode ? '#0f172a' : '#f8fafc', borderColor: borderCol }]}>
+            <View style={[styles.summaryBox, { backgroundColor: isDarkMode ? Colors.darkBgDark : Colors.lightBgSoft, borderColor: borderCol }]}>
               <Text style={[styles.summaryText, { color: textPrimary }]}>
                 Recorded: {extraValue + batRunsValue} total runs (
                 {selectedType.replace('_', ' ').toUpperCase()}
@@ -245,7 +245,7 @@ export const ExtrasModal: React.FC<ExtrasModalProps> = ({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: Colors.backdrop,
     justifyContent: 'flex-end',
   },
   modalCard: {
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   confirmBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '800',
   },

@@ -4,13 +4,13 @@ import { Match, Team } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-    Modal,
-    ScrollView,
-    Share,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Modal,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 interface MatchSummaryModalProps {
@@ -74,11 +74,11 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
     defendingTeam.players[0]?.id || ''
   );
 
-  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
-  const textPrimary = isDarkMode ? '#f8fafc' : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
-  const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
+  const bgModal = isDarkMode ? Colors.darkBg : Colors.white;
+  const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
+  const accentCol = isDarkMode ? Colors.accentDark : Colors.accent;
 
   const handleShare = async () => {
     let message = `🏏 *Cricket Match Result*\n${team1.name} vs ${team2.name}\nVenue: ${match.venue}\n\n`;
@@ -114,7 +114,7 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
               <Ionicons
                 name={isCompleted ? 'trophy' : 'pause-circle'}
                 size={22}
-                color={isCompleted ? '#eab308' : accentCol}
+                color={isCompleted ? Colors.trophy : accentCol}
               />
               <Text style={[styles.modalTitle, { color: textPrimary }]}>
                 {isCompleted ? 'MATCH COMPLETE' : 'INNINGS BREAK'}
@@ -128,15 +128,15 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* Result Header if Completed */}
             {isCompleted && match.result && (
-              <View style={[styles.resultBox, { backgroundColor: isDarkMode ? '#064e3b' : '#ecfdf5', borderColor: '#10b981' }]}>
-                <Text style={[styles.resultText, { color: isDarkMode ? '#34d399' : '#059669' }]}>
+              <View style={[styles.resultBox, { backgroundColor: isDarkMode ? Colors.successBgDark : Colors.successBg, borderColor: Colors.successBorder }]}>
+                <Text style={[styles.resultText, { color: isDarkMode ? Colors.successTextDark : Colors.successText }]}>
                   {match.result}
                 </Text>
               </View>
             )}
 
             {/* Score Summaries */}
-            <View style={[styles.scoreSummaryCard, { backgroundColor: isDarkMode ? '#0f172a' : '#f8fafc', borderColor: borderCol }]}>
+            <View style={[styles.scoreSummaryCard, { backgroundColor: isDarkMode ? Colors.darkBgDark : Colors.lightBgSoft, borderColor: borderCol }]}>
               <View style={styles.innRow}>
                 <Text style={[styles.teamName, { color: textPrimary }]}>{innings1BattingTeam.name}</Text>
                 <Text style={[styles.teamScore, { color: textPrimary }]}>
@@ -182,13 +182,13 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
                       style={[
                         styles.chip,
                         {
-                          backgroundColor: selectedStrikerId === p.id ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                          backgroundColor: selectedStrikerId === p.id ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                           borderColor: selectedStrikerId === p.id ? accentCol : borderCol,
                         },
                       ]}
                       onPress={() => setSelectedStrikerId(p.id)}
                     >
-                      <Text style={[styles.chipText, { color: selectedStrikerId === p.id ? '#fff' : textPrimary }]}>
+                      <Text style={[styles.chipText, { color: selectedStrikerId === p.id ? Colors.white : textPrimary }]}>
                         {p.name}
                       </Text>
                     </TouchableOpacity>
@@ -205,13 +205,13 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
                         style={[
                           styles.chip,
                           {
-                            backgroundColor: selectedNonStrikerId === p.id ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                            backgroundColor: selectedNonStrikerId === p.id ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                             borderColor: selectedNonStrikerId === p.id ? accentCol : borderCol,
                           },
                         ]}
                         onPress={() => setSelectedNonStrikerId(p.id)}
                       >
-                        <Text style={[styles.chipText, { color: selectedNonStrikerId === p.id ? '#fff' : textPrimary }]}>
+                        <Text style={[styles.chipText, { color: selectedNonStrikerId === p.id ? Colors.white : textPrimary }]}>
                           {p.name}
                         </Text>
                       </TouchableOpacity>
@@ -228,13 +228,13 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
                       style={[
                         styles.chip,
                         {
-                          backgroundColor: selectedBowlerId === p.id ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                          backgroundColor: selectedBowlerId === p.id ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                           borderColor: selectedBowlerId === p.id ? accentCol : borderCol,
                         },
                       ]}
                       onPress={() => setSelectedBowlerId(p.id)}
                     >
-                      <Text style={[styles.chipText, { color: selectedBowlerId === p.id ? '#fff' : textPrimary }]}>
+                      <Text style={[styles.chipText, { color: selectedBowlerId === p.id ? Colors.white : textPrimary }]}>
                         {p.name}
                       </Text>
                     </TouchableOpacity>
@@ -257,7 +257,7 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
             ) : (
               <View style={styles.actionsGrid}>
                 <TouchableOpacity
-                  style={[styles.shareBtn, { backgroundColor: isDarkMode ? '#334155' : '#f1f5f9', borderColor: borderCol }]}
+                  style={[styles.shareBtn, { backgroundColor: isDarkMode ? Colors.darkBorder : Colors.lightBg, borderColor: borderCol }]}
                   onPress={handleShare}
                 >
                   <Ionicons name="share-social" size={18} color={textPrimary} />
@@ -282,7 +282,7 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: Colors.backdrop,
     justifyContent: 'flex-end',
   },
   modalCard: {
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
+    borderTopColor: Colors.lightBorder,
     alignItems: 'center',
   },
   targetCalloutText: {
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '800',
   },

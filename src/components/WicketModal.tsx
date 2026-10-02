@@ -3,12 +3,12 @@ import { Player, WicketDetails, WicketType } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 interface WicketModalProps {
@@ -68,11 +68,11 @@ export const WicketModal: React.FC<WicketModalProps> = ({
     }
   }, [visible, striker.id, availableBatters]);
 
-  const bgModal = isDarkMode ? '#1e293b' : Colors.white;
+  const bgModal = isDarkMode ? Colors.darkBg : Colors.white;
   const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
-  const textSecondary = isDarkMode ? '#94a3b8' : Colors.neutral;
-  const borderCol = isDarkMode ? '#334155' : '#e2e8f0';
-  const accentCol = isDarkMode ? '#38bdf8' : '#0284c7';
+  const textSecondary = isDarkMode ? Colors.darkTextSecondary : Colors.neutral;
+  const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorder;
+  const accentCol = isDarkMode ? Colors.accentDark : Colors.accent;
 
   const isFielderRequired = selectedWicketType === 'caught' || selectedWicketType === 'stumped';
   const isRunOut = selectedWicketType === 'run_out';
@@ -100,7 +100,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
         <View style={[styles.modalCard, { backgroundColor: bgModal, borderColor: borderCol }]}>
           <View style={styles.modalHeader}>
             <View style={styles.titleBadge}>
-              <Ionicons name="flame" size={20} color="#dc2626" />
+              <Ionicons name="flame" size={20} color={Colors.wicketRed} />
               <Text style={[styles.modalTitle, { color: textPrimary }]}>Fall of Wicket</Text>
             </View>
             <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
@@ -116,8 +116,8 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                 style={[
                   styles.toggleBtn,
                   selectedOutPlayerId === striker.id && {
-                    backgroundColor: '#dc2626',
-                    borderColor: '#dc2626',
+                    backgroundColor: Colors.wicketRed,
+                    borderColor: Colors.wicketRed,
                   },
                   selectedOutPlayerId !== striker.id && {
                     borderColor: borderCol,
@@ -142,8 +142,8 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                 style={[
                   styles.toggleBtn,
                   selectedOutPlayerId === nonStriker.id && {
-                    backgroundColor: '#dc2626',
-                    borderColor: '#dc2626',
+                    backgroundColor: Colors.wicketRed,
+                    borderColor: Colors.wicketRed,
                   },
                   selectedOutPlayerId !== nonStriker.id && {
                     borderColor: borderCol,
@@ -180,11 +180,11 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                       {
                         backgroundColor: isSelected
                           ? isDarkMode
-                            ? '#0369a1'
-                            : '#e0f2fe'
+                            ? Colors.accentHighlight
+                            : Colors.lightHighlight
                           : isDarkMode
                           ? Colors.secondary
-                          : '#f1f5f9',
+                          : Colors.lightBg,
                         borderColor: isSelected ? accentCol : borderCol,
                       },
                     ]}
@@ -194,7 +194,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                       style={[
                         styles.chipText,
                         {
-                          color: isSelected ? (isDarkMode ? '#ffffff' : '#0369a1') : textPrimary,
+                          color: isSelected ? (isDarkMode ? Colors.white : Colors.accentHighlight) : textPrimary,
                           fontWeight: isSelected ? '700' : '500',
                         },
                       ]}
@@ -225,7 +225,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                         style={[
                           styles.fielderChip,
                           {
-                            backgroundColor: isSelected ? accentCol : isDarkMode ? Colors.secondary : '#f1f5f9',
+                            backgroundColor: isSelected ? accentCol : isDarkMode ? Colors.secondary : Colors.lightBg,
                             borderColor: isSelected ? accentCol : borderCol,
                           },
                         ]}
@@ -234,7 +234,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                         <Text
                           style={[
                             styles.fielderChipText,
-                            { color: isSelected ? '#ffffff' : textPrimary },
+                            { color: isSelected ? Colors.white : textPrimary },
                           ]}
                         >
                           {fielder.name}
@@ -260,7 +260,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                         styles.runPill,
                         {
                           backgroundColor:
-                            runOutRuns === r ? accentCol : isDarkMode ? '#0f172a' : '#f1f5f9',
+                            runOutRuns === r ? accentCol : isDarkMode ? Colors.darkBgDark : Colors.lightBg,
                           borderColor: runOutRuns === r ? accentCol : borderCol,
                         },
                       ]}
@@ -269,7 +269,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                       <Text
                         style={[
                           styles.runPillText,
-                          { color: runOutRuns === r ? '#ffffff' : textPrimary },
+                          { color: runOutRuns === r ? Colors.white : textPrimary },
                         ]}
                       >
                         {r}
@@ -297,11 +297,11 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                           {
                             backgroundColor: isSelected
                               ? isDarkMode
-                                ? '#0369a1'
-                                : '#e0f2fe'
+                                ? Colors.accentHighlight
+                                : Colors.lightHighlight
                               : isDarkMode
-                              ? '#0f172a'
-                              : '#f8fafc',
+                              ? Colors.darkBgDark
+                              : Colors.lightBgSoft,
                             borderColor: isSelected ? accentCol : borderCol,
                           },
                         ]}
@@ -324,8 +324,8 @@ export const WicketModal: React.FC<WicketModalProps> = ({
                 </View>
               </>
             ) : (
-              <View style={[styles.allOutNotice, { backgroundColor: isDarkMode ? '#451a1a' : '#fef2f2' }]}>
-                <Ionicons name="alert-circle" size={18} color="#dc2626" />
+              <View style={[styles.allOutNotice, { backgroundColor: isDarkMode ? Colors.wicketNoticeBg : Colors.wicketNoticeBgLight }]}>
+                <Ionicons name="alert-circle" size={18} color={Colors.wicketRed} />
                 <Text style={styles.allOutNoticeText}>
                   Last wicket! No more batsmen available.
                 </Text>
@@ -335,7 +335,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
 
           {/* Confirm Button */}
           <TouchableOpacity
-            style={[styles.confirmBtn, { backgroundColor: '#dc2626' }]}
+            style={[styles.confirmBtn, { backgroundColor: Colors.wicketRed }]}
             onPress={handleConfirm}
             activeOpacity={0.8}
           >
@@ -350,7 +350,7 @@ export const WicketModal: React.FC<WicketModalProps> = ({
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: Colors.backdrop,
     justifyContent: 'flex-end',
   },
   modalCard: {
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   allOutNoticeText: {
-    color: '#dc2626',
+    color: Colors.wicketRed,
     fontSize: 13,
     fontWeight: '600',
   },
@@ -484,14 +484,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#dc2626',
+    shadowColor: Colors.wicketShadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
   },
   confirmBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '800',
   },
