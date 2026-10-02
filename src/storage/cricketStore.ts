@@ -1,19 +1,18 @@
 import { Colors } from '@/constants/colors';
 import { calculateInnings, determineNextStrike } from '@/engine/scoringEngine';
 import {
-  AppSettings,
-  Delivery,
-  ExtraType,
-  InningsState,
-  Match,
-  MatchStatus,
-  Player,
-  Team,
-  WicketDetails,
+    AppSettings,
+    Delivery,
+    ExtraType,
+    InningsState,
+    Match,
+    MatchStatus,
+    Player,
+    Team,
+    WicketDetails,
 } from '@/types/cricket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
-import { INITIAL_MATCHES, INITIAL_TEAMS } from './initialData';
 
 const STORAGE_KEYS = {
   TEAMS: '@cricket_teams_v1',
@@ -21,6 +20,9 @@ const STORAGE_KEYS = {
   ACTIVE_MATCH_ID: '@cricket_active_match_id_v1',
   SETTINGS: '@cricket_settings_v1',
 };
+
+const LEGACY_SAMPLE_MATCH_ID = 'match_sample_1';
+const LEGACY_SAMPLE_TEAM_IDS = new Set(['team_muzaffarpur', 'team_patna', 'team_delhi']);
 
 const DEFAULT_SETTINGS: AppSettings = {
   darkMode: false,
@@ -111,15 +113,28 @@ export const useCricketStore = create<CricketState>((set, get) => ({
         AsyncStorage.getItem(STORAGE_KEYS.SETTINGS),
       ]);
 
-      const teams: Team[] = storedTeams ? JSON.parse(storedTeams) : INITIAL_TEAMS;
-      const matches: Match[] = storedMatches ? JSON.parse(storedMatches) : INITIAL_MATCHES;
-      const activeMatchId: string | null = storedActiveId ? JSON.parse(storedActiveId) : (matches.find(m => m.status === 'innings1' || m.status === 'innings2')?.id || null);
+      const loadedTeams: Team[] = storedTeams ? JSON.parse(storedTeams) : [];
+      const loadedMatches: Match[] = storedMatches ? JSON.parse(storedMatches) : [];
+      const matches = loadedMatches.filter((match) => match.id !== LEGACY_SAMPLE_MATCH_ID);
+      const referencedTeamIds = new Set(matches.flatMap((match) => [match.team1Id, match.team2Id]));
+      const teams = loadedTeams.filter(
+        (team) => !LEGACY_SAMPLE_TEAM_IDS.has(team.id) || referencedTeamIds.has(team.id)
+      );
+      const requestedActiveMatchId: string | null = storedActiveId ? JSON.parse(storedActiveId) : null;
+      const isActiveMatch = (match: Match) =>
+        match.status === 'innings1' || match.status === 'innings2' || match.status === 'innings_break';
+      const activeMatchId =
+        matches.find((match) => match.id === requestedActiveMatchId && isActiveMatch(match))?.id ||
+        matches.find(isActiveMatch)?.id ||
+        null;
       const settings: AppSettings = storedSettings ? JSON.parse(storedSettings) : DEFAULT_SETTINGS;
 
-      // Save defaults if nothing was stored yet
-      if (!storedTeams) await AsyncStorage.setItem(STORAGE_KEYS.TEAMS, JSON.stringify(teams));
-      if (!storedMatches) await AsyncStorage.setItem(STORAGE_KEYS.MATCHES, JSON.stringify(matches));
-      if (!storedSettings) await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
+      await Promise.all([
+        AsyncStorage.setItem(STORAGE_KEYS.TEAMS, JSON.stringify(teams)),
+        AsyncStorage.setItem(STORAGE_KEYS.MATCHES, JSON.stringify(matches)),
+        AsyncStorage.setItem(STORAGE_KEYS.ACTIVE_MATCH_ID, JSON.stringify(activeMatchId)),
+        AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)),
+      ]);
 
       set({
         teams,
@@ -131,9 +146,9 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     } catch (e) {
       console.error('Failed to initialize cricket store:', e);
       set({
-        teams: INITIAL_TEAMS,
-        matches: INITIAL_MATCHES,
-        activeMatchId: INITIAL_MATCHES[0]?.id || null,
+        teams: [],
+        matches: [],
+        activeMatchId: null,
         settings: DEFAULT_SETTINGS,
         isInitialized: true,
       });
@@ -141,16 +156,17 @@ export const useCricketStore = create<CricketState>((set, get) => ({
   },
 
   resetAllData: async () => {
-    await AsyncStorage.clear();
-    await AsyncStorage.setItem(STORAGE_KEYS.TEAMS, JSON.stringify(INITIAL_TEAMS));
-    await AsyncStorage.setItem(STORAGE_KEYS.MATCHES, JSON.stringify(INITIAL_MATCHES));
-    await AsyncStorage.setItem(STORAGE_KEYS.ACTIVE_MATCH_ID, JSON.stringify(INITIAL_MATCHES[0].id));
-    await AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
+    await Promise.all([
+      AsyncStorage.setItem(STORAGE_KEYS.TEAMS, JSON.stringify([])),
+      AsyncStorage.setItem(STORAGE_KEYS.MATCHES, JSON.stringify([])),
+      AsyncStorage.setItem(STORAGE_KEYS.ACTIVE_MATCH_ID, JSON.stringify(null)),
+      AsyncStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(DEFAULT_SETTINGS)),
+    ]);
 
     set({
-      teams: INITIAL_TEAMS,
-      matches: INITIAL_MATCHES,
-      activeMatchId: INITIAL_MATCHES[0].id,
+      teams: [],
+      matches: [],
+      activeMatchId: null,
       settings: DEFAULT_SETTINGS,
     });
   },

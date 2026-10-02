@@ -156,6 +156,21 @@ export default function NewMatchScreen() {
               Pick Team 1 and Team 2 from your saved teams
             </Text>
 
+            {teams.length < 2 && (
+              <View style={[styles.noTeamsBox, { backgroundColor: bgCard, borderColor: borderCol }]}>
+                <Text style={[styles.stepDesc, { color: textSecondary }]}>
+                  Create at least two teams before starting a match.
+                </Text>
+                <TouchableOpacity
+                  style={[styles.createTeamButton, { backgroundColor: accentCol }]}
+                  onPress={() => router.push('/team/new')}
+                >
+                  <Ionicons name="add" size={18} color={Colors.white} />
+                  <Text style={styles.createTeamButtonText}>Create Team</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
             <Text style={[styles.fieldLabel, { color: textSecondary, marginTop: 16 }]}>TEAM 1 (HOME)</Text>
             <View style={styles.teamList}>
               {teams.map((t) => (
@@ -535,6 +550,27 @@ const styles = StyleSheet.create({
   },
   stepContainer: {
     flex: 1,
+  },
+  noTeamsBox: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 14,
+    marginTop: 14,
+    gap: 10,
+  },
+  createTeamButton: {
+    minHeight: 42,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+  },
+  createTeamButtonText: {
+    color: Colors.white,
+    fontSize: 14,
+    fontWeight: '700',
   },
   stepHeading: {
     fontSize: 22,

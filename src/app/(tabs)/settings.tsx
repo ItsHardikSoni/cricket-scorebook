@@ -3,14 +3,14 @@ import { useCricketStore } from '@/storage/cricketStore';
 import { MatchFormat } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import {
-  Alert,
-  ScrollView,
-  Share,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    ScrollView,
+    Share,
+    StyleSheet,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 export default function SettingsScreen() {
   const { settings, updateSettings, resetAllData, matches, teams } = useCricketStore();
@@ -26,15 +26,15 @@ export default function SettingsScreen() {
   const handleResetData = () => {
     Alert.alert(
       'Reset All Data',
-      'This will reset teams and matches back to default sample data. Are you sure?',
+      'This will permanently delete all saved teams and matches. This cannot be undone.',
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Reset to Sample Data',
+          text: 'Clear All Data',
           style: 'destructive',
           onPress: async () => {
             await resetAllData();
-            Alert.alert('Reset Complete', 'Sample matches and teams have been reloaded.');
+            Alert.alert('Data Cleared', 'All saved teams and matches have been removed.');
           },
         },
       ]
@@ -171,9 +171,9 @@ export default function SettingsScreen() {
             <View style={styles.rowLeft}>
               <Ionicons name="refresh-outline" size={20} color={Colors.trash} />
               <View>
-                <Text style={[styles.rowLabel, { color: Colors.trash }]}>Reset to Sample Data</Text>
+                <Text style={[styles.rowLabel, { color: Colors.trash }]}>Clear All Data</Text>
                 <Text style={[styles.rowSub, { color: textSecondary }]}>
-                  Reload sample teams and active match
+                  Remove all saved teams and matches
                 </Text>
               </View>
             </View>

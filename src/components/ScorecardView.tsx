@@ -2,9 +2,34 @@ import { MatchAwardsSection } from '@/components/MatchAwardsSection';
 import { Colors } from '@/constants/colors';
 import { calculateMatchAwards } from '@/engine/matchAwards';
 import { calculateInnings } from '@/engine/scoringEngine';
-import { Match, Team } from '@/types/cricket';
+import { Delivery, Match, Team } from '@/types/cricket';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+interface OverScoreAnalytics {
+  overNumber: number;
+  runs: number;
+  wickets: number;
+  cumulativeRuns: number;
+}
+
+function calculateScoreByOver(deliveries: Delivery[]): OverScoreAnalytics[] {
+  const overStats = new Map<number, { runs: number; wickets: number }>();
+  for (const delivery of deliveries) {
+    const stats = overStats.get(delivery.overIndex) || { runs: 0, wickets: 0 };
+    stats.runs += delivery.runsBat + delivery.extraRuns;
+    if (delivery.wicket && delivery.wicket.wicketType !== 'retired_hurt') stats.wickets += 1;
+    overStats.set(delivery.overIndex, stats);
+  }
+
+  let cumulativeRuns = 0;
+  return [...overStats.entries()]
+    .sort(([leftOver], [rightOver]) => leftOver - rightOver)
+    .map(([overIndex, stats]) => {
+      cumulativeRuns += stats.runs;
+      return { overNumber: overIndex + 1, ...stats, cumulativeRuns };
+    });
+}
 
 interface ScorecardViewProps {
   match: Match;
@@ -59,7 +84,10 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
 
   const activeCalc = selectedInnings === 1 ? calc1 : calc2 || calc1;
   const activeBattingTeam = selectedInnings === 1 ? innings1BattingTeam : innings2BattingTeam || innings1BattingTeam;
+  const activeInnings = selectedInnings === 1 ? match.innings1 : match.innings2 || match.innings1;
   const matchAwards = match.status === 'completed' ? calculateMatchAwards(match, team1, team2) : [];
+  const scoreByOver = calculateScoreByOver(activeInnings.deliveries);
+  const maxRunsInOver = Math.max(1, ...scoreByOver.map((over) => over.runs));
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -127,6 +155,42 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
         <Text style={[styles.bannerCrr, { color: textSecondary }]}>
           Run Rate: {activeCalc.runRate.toFixed(2)}
         </Text>
+      </View>
+
+      <View style={[styles.analyticsCard, { backgroundColor: bgCard, borderColor: borderCol }]}>
+        <Text style={[styles.sectionTitle, { color: textSecondary }]}>TEAM SCORE BY OVER</Text>
+        {scoreByOver.length === 0 ? (
+          <Text style={[styles.analyticsEmptyText, { color: textSecondary }]}>No deliveries scored yet.</Text>
+        ) : (
+          scoreByOver.map((over) => (
+            <View key={over.overNumber} style={styles.analyticsRow}>
+              <Text style={[styles.analyticsOver, { color: textSecondary }]}>Ov {over.overNumber}</Text>
+              <View style={[styles.analyticsTrack, { backgroundColor: isDarkMode ? Colors.secondary : Colors.lightBg }]}>
+                <View
+                  style={[
+                    styles.analyticsBar,
+                    {
+                      width: `${Math.max(3, (over.runs / maxRunsInOver) * 100)}%`,
+                      backgroundColor: Colors.primary,
+                    },
+                  ]}
+                />
+              </View>
+              <Text style={[styles.analyticsRuns, { color: textPrimary }]}>{over.runs}</Text>
+              <Text style={[styles.analyticsTotal, { color: textSecondary }]}>{over.cumulativeRuns}</Text>
+              {over.wickets > 0 && (
+                <Text style={[styles.analyticsWickets, { color: Colors.wicketRedText }]}>
+                  {over.wickets}W
+                </Text>
+              )}
+            </View>
+          ))
+        )}
+        <View style={[styles.analyticsLegend, { borderTopColor: borderCol }]}>
+          <Text style={[styles.analyticsLegendText, { color: textSecondary }]}>RUNS</Text>
+          <Text style={[styles.analyticsLegendText, { color: textSecondary }]}>TOTAL SCORE</Text>
+          <Text style={[styles.analyticsLegendText, { color: Colors.wicketRedText }]}>WICKETS</Text>
+        </View>
       </View>
 
       {/* Batting Scorecard Table */}
@@ -206,7 +270,7 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
       {/* Fall of Wickets */}
       {activeCalc.fallOfWickets.length > 0 && (
         <View style={[styles.fowCard, { backgroundColor: bgCard, borderColor: borderCol, marginTop: 14 }]}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>FALL OF WICKETS</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>WICKET FALL ANALYTICS</Text>
           <View style={styles.fowList}>
             {activeCalc.fallOfWickets.map((fow) => (
               <View key={fow.wicketNumber} style={styles.fowItem}>
@@ -256,6 +320,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
+  },
+  analyticsCard: {
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 14,
+    marginBottom: 12,
+  },
+  analyticsEmptyText: {
+    fontSize: 13,
+    paddingVertical: 8,
+  },
+  analyticsRow: {
+    minHeight: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 6,
+  },
+  analyticsOver: {
+    width: 42,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  analyticsTrack: {
+    flex: 1,
+    height: 8,
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  analyticsBar: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  analyticsRuns: {
+    width: 24,
+    fontSize: 12,
+    textAlign: 'right',
+    fontWeight: '700',
+  },
+  analyticsTotal: {
+    width: 34,
+    fontSize: 12,
+    textAlign: 'right',
+  },
+  analyticsWickets: {
+    minWidth: 22,
+    fontSize: 11,
+    textAlign: 'right',
+    fontWeight: '800',
+  },
+  analyticsLegend: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: 10,
+    paddingTop: 8,
+  },
+  analyticsLegendText: {
+    fontSize: 9,
+    fontWeight: '700',
   },
   bannerTeam: {
     fontSize: 16,
