@@ -3,12 +3,22 @@
     "name": "Cricket Scorebook",
     "slug": "cricket-scorebook",
     "version": "1.0.1",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2517f490-f45e-4751-9afc-96cbd14c3633"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "scheme": "cricket-scorebook",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/images/logo.png"
+      "icon": "./assets/images/logo.png",
+      "bundleIdentifier": "com.ayushlabs.cricket",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +27,8 @@
         "backgroundImage": "./assets/images/logo.png",
         "monochromeImage": "./assets/images/logo.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.ayushlabs.cricket"
     },
     "web": {
       "output": "static",
