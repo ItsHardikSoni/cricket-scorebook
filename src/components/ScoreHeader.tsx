@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 8,
     marginBottom: 6,
   },
   teamBadge: {
@@ -115,11 +116,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     flex: 1,
+    minWidth: 0,
   },
   teamName: {
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: -0.3,
+    flexShrink: 1,
+    minWidth: 0,
   },
   inningsBadge: {
     fontSize: 12,

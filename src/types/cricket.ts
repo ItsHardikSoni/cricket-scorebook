@@ -11,6 +11,16 @@ export type WicketType =
 
 export type ExtraType = 'wide' | 'no_ball' | 'bye' | 'leg_bye' | 'penalty';
 
+export type ShotDirection =
+  | 'third_man'
+  | 'point'
+  | 'cover'
+  | 'mid_off'
+  | 'straight'
+  | 'mid_on'
+  | 'mid_wicket'
+  | 'fine_leg';
+
 export type MatchFormat = 'T10' | 'T20' | 'ODI' | 'Custom';
 
 export type TossDecision = 'bat' | 'bowl';
@@ -56,6 +66,7 @@ export interface Delivery {
   runsBat: number; // Runs off the bat (0, 1, 2, 3, 4, 6)
   extraRuns: number; // 1 for wide/no_ball plus any extra
   extraType?: ExtraType;
+  shotDirection?: ShotDirection;
   isLegal: boolean; // false for wide and no_ball
   wicket?: WicketDetails;
   timestamp: number;

@@ -1,11 +1,12 @@
 import { Colors } from '@/constants/colors';
-import { ExtraType } from '@/types/cricket';
+import { SHOT_DIRECTIONS } from '@/constants/shotDirections';
+import { ExtraType, ShotDirection } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface ScoringPadProps {
-  onScoreRuns: (runs: number) => void;
+  onScoreRuns: (runs: number, shotDirection?: ShotDirection) => void;
   onQuickExtra: (type: ExtraType) => void;
   onOpenCustomExtras: () => void;
   onOpenWicketDialog: () => void;
@@ -23,10 +24,16 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
   canUndo,
   isDarkMode = false,
 }) => {
+  const [shotDirection, setShotDirection] = useState<ShotDirection | undefined>();
   const bgPad = isDarkMode ? Colors.secondary : Colors.white;
   const bgButton = isDarkMode ? Colors.darkBg : Colors.white;
   const textPrimary = isDarkMode ? Colors.white : Colors.secondary;
   const borderCol = isDarkMode ? Colors.darkBorder : Colors.lightBorderSoft;
+
+  const scoreRuns = (runs: number) => {
+    onScoreRuns(runs, runs > 0 ? shotDirection : undefined);
+    setShotDirection(undefined);
+  };
 
   return (
     <View style={[styles.container, { backgroundColor: bgPad }]}>
@@ -36,7 +43,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
           <TouchableOpacity
             key={run}
             style={[styles.runButton, { backgroundColor: bgButton, borderColor: borderCol }]}
-            onPress={() => onScoreRuns(run)}
+            onPress={() => scoreRuns(run)}
             activeOpacity={0.6}
           >
             <Text style={[styles.runButtonText, { color: textPrimary }]}>{run}</Text>
@@ -47,7 +54,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
       <View style={styles.gridRow}>
         <TouchableOpacity
           style={[styles.runButton, { backgroundColor: bgButton, borderColor: borderCol }]}
-          onPress={() => onScoreRuns(3)}
+          onPress={() => scoreRuns(3)}
           activeOpacity={0.6}
         >
           <Text style={[styles.runButtonText, { color: textPrimary }]}>3</Text>
@@ -62,7 +69,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
               borderColor: Colors.primary,
             },
           ]}
-          onPress={() => onScoreRuns(4)}
+          onPress={() => scoreRuns(4)}
           activeOpacity={0.6}
         >
           <Text style={[styles.runButtonText, { color: isDarkMode ? Colors.successTextDark : Colors.primary }]}>
@@ -80,7 +87,7 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
               borderColor: Colors.primary,
             },
           ]}
-          onPress={() => onScoreRuns(6)}
+          onPress={() => scoreRuns(6)}
           activeOpacity={0.6}
         >
           <Text style={[styles.runButtonText, { color: isDarkMode ? Colors.successTextDark : Colors.primary }]}>
@@ -131,6 +138,44 @@ export const ScoringPad: React.FC<ScoringPadProps> = ({
         >
           <Ionicons name="ellipsis-horizontal" size={16} color={textPrimary} />
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.directionPicker}>
+        <Text style={[styles.directionTitle, { color: textPrimary }]}>SHOT DIRECTION</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.directionOptions}>
+          <TouchableOpacity
+            style={[
+              styles.directionOption,
+              { borderColor: borderCol, backgroundColor: bgButton },
+              !shotDirection && { borderColor: Colors.primary, backgroundColor: isDarkMode ? Colors.boundaryAccent : Colors.boundaryAccentLight },
+            ]}
+            onPress={() => setShotDirection(undefined)}
+            accessibilityRole="button"
+            accessibilityLabel="Clear shot direction"
+            accessibilityState={{ selected: !shotDirection }}
+          >
+            <Text style={[styles.directionOptionText, { color: textPrimary }]}>NONE</Text>
+          </TouchableOpacity>
+          {SHOT_DIRECTIONS.map((direction) => (
+            <TouchableOpacity
+              key={direction.value}
+              style={[
+                styles.directionOption,
+                { borderColor: borderCol, backgroundColor: bgButton },
+                shotDirection === direction.value && {
+                  borderColor: Colors.primary,
+                  backgroundColor: isDarkMode ? Colors.boundaryAccent : Colors.boundaryAccentLight,
+                },
+              ]}
+              onPress={() => setShotDirection(direction.value)}
+              accessibilityRole="button"
+              accessibilityLabel={direction.label}
+              accessibilityState={{ selected: shotDirection === direction.value }}
+            >
+              <Text style={[styles.directionOptionText, { color: textPrimary }]}>{direction.shortLabel.toUpperCase()}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
 
       {/* Major Action Row: WICKET & UNDO */}
@@ -202,6 +247,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     marginBottom: 10,
+  },
+  directionPicker: {
+    marginBottom: 10,
+  },
+  directionTitle: {
+    fontSize: 9,
+    fontWeight: '700',
+    marginBottom: 5,
+  },
+  directionOptions: {
+    gap: 6,
+  },
+  directionOption: {
+    minHeight: 30,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  directionOptionText: {
+    fontSize: 9,
+    fontWeight: '700',
   },
   extraBtn: {
     flex: 1,

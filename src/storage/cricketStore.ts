@@ -1,15 +1,15 @@
 import { Colors } from '@/constants/colors';
 import { calculateInnings, determineNextStrike } from '@/engine/scoringEngine';
 import {
-  AppSettings,
-  Delivery,
-  ExtraType,
-  InningsState,
-  Match,
-  MatchStatus,
-  Player,
-  Team,
-  WicketDetails,
+    AppSettings,
+    Delivery,
+    ExtraType,
+    InningsState,
+    Match,
+    MatchStatus,
+    Player,
+    Team,
+    WicketDetails,
 } from '@/types/cricket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
@@ -79,6 +79,7 @@ interface CricketState {
     runsBat: number;
     extraRuns: number;
     extraType?: ExtraType;
+    shotDirection?: Delivery['shotDirection'];
     isLegal: boolean;
     wicket?: WicketDetails;
     newBatsmanId?: string;
@@ -310,7 +311,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     await AsyncStorage.setItem(STORAGE_KEYS.MATCHES, JSON.stringify(updatedMatches));
   },
 
-  recordDelivery: async ({ runsBat, extraRuns, extraType, isLegal, wicket, newBatsmanId }) => {
+  recordDelivery: async ({ runsBat, extraRuns, extraType, shotDirection, isLegal, wicket, newBatsmanId }) => {
     const state = get();
     const match = state.getActiveMatch();
     if (!match) return { overCompleted: false, inningsEnded: false, matchEnded: false };
@@ -347,6 +348,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
       runsBat,
       extraRuns,
       extraType,
+      shotDirection,
       isLegal,
       wicket,
       timestamp: Date.now(),

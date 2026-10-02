@@ -10,7 +10,7 @@ import { WicketModal } from '@/components/WicketModal';
 import { Colors } from '@/constants/colors';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { useCricketStore } from '@/storage/cricketStore';
-import { ExtraType, WicketDetails } from '@/types/cricket';
+import { ExtraType, ShotDirection, WicketDetails } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
@@ -131,10 +131,11 @@ export default function LiveScoringScreen() {
   const lastOverBowlerId = lastOverDeliveries.length > 0 ? lastOverDeliveries[0].bowlerId : undefined;
 
   // Handlers
-  const handleScoreRuns = async (runs: number) => {
+  const handleScoreRuns = async (runs: number, shotDirection?: ShotDirection) => {
     const result = await recordDelivery({
       runsBat: runs,
       extraRuns: 0,
+      shotDirection,
       isLegal: true,
     });
 
