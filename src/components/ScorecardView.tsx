@@ -290,7 +290,7 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
         </View>
       </View>
 
-      <View style={[styles.analyticsCard, { backgroundColor: bgCard, borderColor: borderCol }]}>
+      <View style={[styles.analyticsCard, { backgroundColor: bgCard, borderColor: borderCol, marginTop: 14 }]}>
         <View style={styles.partnershipHeading}>
           <Text style={[styles.sectionTitle, { color: textSecondary, marginBottom: 0 }]}>PARTNERSHIPS</Text>
           {bestPartnership && (
