@@ -132,7 +132,7 @@ export function AppSplash({ isStoreReady, onFinished }: AppSplashProps) {
           </View>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>v1.0.0 • Cricket Scorebook</Text>
+            <Text style={styles.footerText}>v1.0.1 • Cricket Scorebook</Text>
             <Text style={styles.footerText}>Ready for Cricket</Text>
           </View>
         </View>
@@ -150,7 +150,7 @@ function FeatureChip({
 }) {
   return (
     <View style={styles.chip}>
-      <Ionicons name={icon} size={14} color={Colors.primary} />
+      <Ionicons name={icon} size={14} color={Colors.white} />
       <Text style={styles.chipText}>{label}</Text>
     </View>
   );
