@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Stack, DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import * as SplashScreen from 'expo-splash-screen';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useCricketStore } from '@/storage/cricketStore';
 import { AppSplash } from '@/components/AppSplash';
 import { Colors } from '@/constants/colors';
+import { useCricketStore } from '@/storage/cricketStore';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useCallback, useEffect, useState } from 'react';
+import { StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,16 +29,21 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? Colors.secondary : Colors.white }} edges={['top', 'left', 'right', 'bottom']}>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
-      <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right'}}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="match/scoring" options={{ headerShown: false, gestureEnabled: false}}/>
-        <Stack.Screen name="match/new" options={{ headerShown: false, presentation: 'modal'}}/>
-        <Stack.Screen name="match/[id]" options={{ headerShown: false}}/>
-        <Stack.Screen name="team/new" options={{ headerShown: false, presentation: 'modal'}}/>
-        <Stack.Screen name="team/[id]" options={{ headerShown: false}}/>
-      </Stack>
+      <SafeAreaView style={{ backgroundColor: Colors.primary }} edges={['top']}>
+        <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
+        <SafeAreaView
+          style={{ flex: 1, backgroundColor: isDark ? Colors.secondary : Colors.white }}
+          edges={['left', 'right', 'bottom']}
+        >
+          <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right'}}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="match/scoring" options={{ headerShown: false, gestureEnabled: false}}/>
+            <Stack.Screen name="match/new" options={{ headerShown: false, presentation: 'modal'}}/>
+            <Stack.Screen name="match/[id]" options={{ headerShown: false}}/>
+            <Stack.Screen name="team/new" options={{ headerShown: false, presentation: 'modal'}}/>
+            <Stack.Screen name="team/[id]" options={{ headerShown: false}}/>
+          </Stack>
+        </SafeAreaView>
       </SafeAreaView>
     </ThemeProvider>
   );
