@@ -29,15 +29,26 @@ export default function CreateTeamScreen() {
   const [teamName, setTeamName] = useState('');
   const [shortName, setShortName] = useState('');
   const [newPlayerName, setNewPlayerName] = useState('');
-  const [newPlayerRole, setNewPlayerRole] = useState<Player['role']>('batsman');
+  const newPlayerRole: Player['role'] = 'batsman';
 
-  const [players, setPlayers] = useState<Omit<Player, 'id'>[]>([
-    { name: 'Player 1', role: 'batsman', isCaptain: true },
-    { name: 'Player 2', role: 'batsman' },
-    { name: 'Player 3', role: 'all_rounder', isWicketkeeper: true },
-    { name: 'Player 4', role: 'all_rounder' },
-    { name: 'Player 5', role: 'bowler' },
-  ]);
+  const [players, setPlayers] = useState<Omit<Player, 'id'>[]>([]);
+
+  const togglePlayerDesignation = (
+    playerIndex: number,
+    designation: 'isCaptain' | 'isViceCaptain' | 'isWicketkeeper'
+  ) => {
+    const isSelecting = !players[playerIndex][designation];
+    setPlayers(players.map((player, index) => {
+      const updatedPlayer = { ...player, [designation]: index === playerIndex ? isSelecting : false };
+      if (index === playerIndex && isSelecting && designation === 'isCaptain') {
+        updatedPlayer.isViceCaptain = false;
+      }
+      if (index === playerIndex && isSelecting && designation === 'isViceCaptain') {
+        updatedPlayer.isCaptain = false;
+      }
+      return updatedPlayer;
+    }));
+  };
 
   const handleAddPlayer = () => {
     if (!newPlayerName.trim()) {
@@ -67,6 +78,18 @@ export default function CreateTeamScreen() {
 
     if (players.length < 2) {
       Alert.alert('Players Required', 'Please add at least 2 players to the team');
+      return;
+    }
+    if (!players.some((player) => player.isCaptain)) {
+      Alert.alert('Captain Required', 'Choose a captain before saving the team');
+      return;
+    }
+    if (!players.some((player) => player.isViceCaptain)) {
+      Alert.alert('Vice-Captain Required', 'Choose a vice-captain before saving the team');
+      return;
+    }
+    if (!players.some((player) => player.isWicketkeeper)) {
+      Alert.alert('Wicketkeeper Required', 'Choose a wicketkeeper before saving the team');
       return;
     }
 
@@ -151,8 +174,37 @@ export default function CreateTeamScreen() {
               <View style={styles.playerDetails}>
                 <Text style={[styles.playerName, { color: textPrimary }]}>{p.name}</Text>
                 <Text style={[styles.playerRole, { color: textSecondary }]}>
-                  {p.role} {p.isCaptain ? '• Captain' : ''} {p.isWicketkeeper ? '• WK' : ''}
+                  {p.role || 'Player'}
                 </Text>
+                <View style={styles.designationsRow}>
+                  {([
+                    ['isCaptain', 'Captain'],
+                    ['isViceCaptain', 'Vice-captain'],
+                    ['isWicketkeeper', 'Wicketkeeper'],
+                  ] as const).map(([designation, label]) => {
+                    const selected = Boolean(p[designation]);
+                    return (
+                      <TouchableOpacity
+                        key={designation}
+                        style={[
+                          styles.designationButton,
+                          {
+                            backgroundColor: selected ? accentCol : isDark ? Colors.darkBg : Colors.lightBg,
+                            borderColor: selected ? accentCol : borderCol,
+                          },
+                        ]}
+                        onPress={() => togglePlayerDesignation(idx, designation)}
+                        accessibilityRole="checkbox"
+                        accessibilityState={{ checked: selected }}
+                        accessibilityLabel={`${label} for ${p.name}`}
+                      >
+                        <Text style={[styles.designationText, { color: selected ? Colors.white : textSecondary }]}>
+                          {label}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
               </View>
               <TouchableOpacity onPress={() => handleRemovePlayer(idx)}>
                 <Ionicons name="trash-outline" size={18} color={Colors.trash} />
@@ -270,6 +322,23 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textTransform: 'capitalize',
     marginTop: 1,
+  },
+  designationsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginTop: 8,
+  },
+  designationButton: {
+    minHeight: 28,
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+    borderRadius: 6,
+    borderWidth: 1,
+  },
+  designationText: {
+    fontSize: 10,
+    fontWeight: '700',
   },
   footer: {
     padding: 16,

@@ -35,8 +35,8 @@ export default function NewMatchScreen() {
   const [overs, setOvers] = useState<string>(
     format === 'T10' ? '10' : format === 'T20' ? '20' : format === 'ODI' ? '50' : '20'
   );
-  const [venue, setVenue] = useState<string>('Local Cricket Ground');
-  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [venue, setVenue] = useState<string>('');
+  const [date, setDate] = useState<string>('');
   const [tossWinnerId, setTossWinnerId] = useState<string>(teams[0]?.id || '');
   const [tossDecision, setTossDecision] = useState<TossDecision>('bat');
 
@@ -115,8 +115,8 @@ export default function NewMatchScreen() {
       team2PlayingXI: t2Players,
       format,
       overs: parseInt(overs, 10) || 20,
-      venue: venue.trim() || 'Local Ground',
-      date: date.trim() || new Date().toISOString().split('T')[0],
+      venue: venue.trim(),
+      date: date.trim(),
       tossWinnerId,
       tossDecision,
       strikerId,
@@ -307,7 +307,7 @@ export default function NewMatchScreen() {
               style={[styles.input, { backgroundColor: bgCard, borderColor: borderCol, color: textPrimary }]}
               value={venue}
               onChangeText={setVenue}
-              placeholder="e.g. Gandhi Maidan, Patna"
+              placeholder="Ground name (optional)"
               placeholderTextColor={textSecondary}
             />
 
@@ -316,7 +316,7 @@ export default function NewMatchScreen() {
               style={[styles.input, { backgroundColor: bgCard, borderColor: borderCol, color: textPrimary }]}
               value={date}
               onChangeText={setDate}
-              placeholder="YYYY-MM-DD"
+              placeholder="Date (optional, YYYY-MM-DD)"
               placeholderTextColor={textSecondary}
             />
           </View>

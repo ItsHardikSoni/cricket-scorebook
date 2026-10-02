@@ -5,13 +5,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 export default function MatchesScreen() {
@@ -162,7 +162,9 @@ export default function MatchesScreen() {
                         <Text style={[styles.doneTagText, { color: textSecondary }]}>COMPLETED</Text>
                       </View>
                     )}
-                    <Text style={[styles.cardDate, { color: textSecondary }]}>{m.date}</Text>
+                    <Text style={[styles.cardDate, { color: textSecondary }]}>
+                      {m.date || 'Date not specified'}
+                    </Text>
                   </View>
 
                   <TouchableOpacity
@@ -189,7 +191,7 @@ export default function MatchesScreen() {
                     {team1?.name} vs {team2?.name}
                   </Text>
                   <Text style={[styles.matchVenue, { color: textSecondary }]}>
-                    {m.venue} • {m.format} ({m.overs} ov)
+                    {m.venue || 'Ground not specified'} • {m.format} ({m.overs} ov)
                   </Text>
 
                   <View style={styles.scoreRow}>

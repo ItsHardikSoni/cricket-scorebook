@@ -58,7 +58,7 @@ export default function MatchDetailScreen() {
       match.team1PlayingXI.length || 11
     );
 
-    let message = `🏏 *Cricket Match Scorecard*\n${team1.name} vs ${team2.name}\nVenue: ${match.venue}\nDate: ${match.date}\n\n`;
+    let message = `🏏 *Cricket Match Scorecard*\n${team1.name} vs ${team2.name}\nVenue: ${match.venue || 'Not specified'}\nDate: ${match.date || 'Not specified'}\n\n`;
     message += `1st Innings: ${calc1.totalRuns}/${calc1.totalWickets} (${calc1.oversFormatted} ov)\n`;
     if (match.result) {
       message += `Result: ${match.result}\n`;
@@ -84,7 +84,7 @@ export default function MatchDetailScreen() {
             {team1.shortName || team1.name} vs {team2.shortName || team2.name}
           </Text>
           <Text style={[styles.headerSub, { color: textSecondary }]}>
-            {match.format} • {match.venue}
+            {match.format} • {match.venue || 'Ground not specified'}
           </Text>
         </View>
         <TouchableOpacity onPress={handleShare} style={styles.shareBtn}>

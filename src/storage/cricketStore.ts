@@ -1,15 +1,15 @@
 import { Colors } from '@/constants/colors';
 import { calculateInnings, determineNextStrike } from '@/engine/scoringEngine';
 import {
-    AppSettings,
-    Delivery,
-    ExtraType,
-    InningsState,
-    Match,
-    MatchStatus,
-    Player,
-    Team,
-    WicketDetails,
+  AppSettings,
+  Delivery,
+  ExtraType,
+  InningsState,
+  Match,
+  MatchStatus,
+  Player,
+  Team,
+  WicketDetails,
 } from '@/types/cricket';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
@@ -269,8 +269,8 @@ export const useCricketStore = create<CricketState>((set, get) => ({
       team2PlayingXI: params.team2PlayingXI,
       format: params.format,
       overs: params.overs,
-      venue: params.venue || 'Local Ground',
-      date: params.date || new Date().toISOString().split('T')[0],
+      venue: params.venue.trim(),
+      date: params.date.trim(),
       tossWinnerId: params.tossWinnerId,
       tossDecision: params.tossDecision,
       status: 'innings1',

@@ -3,6 +3,7 @@ import { Colors } from '@/constants/colors';
 import { calculateMatchAwards } from '@/engine/matchAwards';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { Delivery, Match, Team } from '@/types/cricket';
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -85,6 +86,7 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
   const activeCalc = selectedInnings === 1 ? calc1 : calc2 || calc1;
   const activeBattingTeam = selectedInnings === 1 ? innings1BattingTeam : innings2BattingTeam || innings1BattingTeam;
   const activeInnings = selectedInnings === 1 ? match.innings1 : match.innings2 || match.innings1;
+  const tossWinner = match.tossWinnerId === team1.id ? team1 : team2;
   const matchAwards = match.status === 'completed' ? calculateMatchAwards(match, team1, team2) : [];
   const scoreByOver = calculateScoreByOver(activeInnings.deliveries);
   const maxRunsInOver = Math.max(1, ...scoreByOver.map((over) => over.runs));
@@ -155,6 +157,16 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
         <Text style={[styles.bannerCrr, { color: textSecondary }]}>
           Run Rate: {activeCalc.runRate.toFixed(2)}
         </Text>
+      </View>
+
+      <View style={[styles.tossBanner, { backgroundColor: isDarkMode ? Colors.darkBg : Colors.lightHighlight, borderColor: borderCol }]}>
+        <Ionicons name="flag-outline" size={18} color={Colors.primary} />
+        <View style={styles.tossDetails}>
+          <Text style={[styles.tossTitle, { color: textSecondary }]}>TOSS DECISION</Text>
+          <Text style={[styles.tossText, { color: textPrimary }]}>
+            {tossWinner.name} won the toss and elected to {match.tossDecision === 'bat' ? 'bat' : 'bowl'} first.
+          </Text>
+        </View>
       </View>
 
       <View style={[styles.analyticsCard, { backgroundColor: bgCard, borderColor: borderCol }]}>
@@ -320,6 +332,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'baseline',
+  },
+  tossBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  tossDetails: {
+    flex: 1,
+  },
+  tossTitle: {
+    fontSize: 10,
+    fontWeight: '800',
+  },
+  tossText: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginTop: 3,
   },
   analyticsCard: {
     borderRadius: 12,

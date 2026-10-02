@@ -1,6 +1,6 @@
 import { Colors } from '@/constants/colors';
 import { MatchAward } from '@/engine/matchAwards';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -24,7 +24,10 @@ export const MatchAwardsSection: React.FC<MatchAwardsSectionProps> = ({ awards, 
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.heading, { color: textSecondary }]}>MATCH AWARDS</Text>
+      <View style={styles.headingRow}>
+        <MaterialIcons name="sports-cricket" size={18} color={Colors.primary} />
+        <Text style={[styles.heading, { color: textSecondary }]}>MATCH AWARDS</Text>
+      </View>
       {awards.map((award) => (
         <View key={award.title} style={[styles.awardRow, { borderTopColor: borderColor }]}>
           <Ionicons name={awardIcons[award.title]} size={20} color={Colors.primary} />
@@ -47,6 +50,11 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 11,
     fontWeight: '800',
+  },
+  headingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
     marginBottom: 6,
   },
   awardRow: {

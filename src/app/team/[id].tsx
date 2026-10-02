@@ -64,9 +64,21 @@ export default function TeamDetailScreen() {
   };
 
   const handleToggleCaptain = async (playerId: string) => {
+    const isSelecting = !team.players.find((player) => player.id === playerId)?.isCaptain;
     const updatedPlayers = team.players.map((p) => ({
       ...p,
       isCaptain: p.id === playerId ? !p.isCaptain : false, // only one captain
+      isViceCaptain: p.id === playerId && isSelecting ? false : p.isViceCaptain,
+    }));
+    await updateTeam(team.id, { players: updatedPlayers });
+  };
+
+  const handleToggleViceCaptain = async (playerId: string) => {
+    const isSelecting = !team.players.find((player) => player.id === playerId)?.isViceCaptain;
+    const updatedPlayers = team.players.map((p) => ({
+      ...p,
+      isViceCaptain: p.id === playerId ? isSelecting : false,
+      isCaptain: p.id === playerId && isSelecting ? false : p.isCaptain,
     }));
     await updateTeam(team.id, { players: updatedPlayers });
   };
@@ -186,6 +198,11 @@ export default function TeamDetailScreen() {
                       <Text style={styles.cBadgeText}>Captain</Text>
                     </View>
                   )}
+                  {p.isViceCaptain && (
+                    <View style={styles.vcBadge}>
+                      <Text style={styles.vcBadgeText}>Vice-captain</Text>
+                    </View>
+                  )}
                   {p.isWicketkeeper && (
                     <View style={styles.wkBadge}>
                       <Text style={styles.wkBadgeText}>Wicketkeeper</Text>
@@ -212,6 +229,28 @@ export default function TeamDetailScreen() {
                     ]}
                   >
                     C
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[
+                    styles.tagBtn,
+                    {
+                      backgroundColor: p.isViceCaptain ? accentCol : isDark ? Colors.darkBg : Colors.lightBg,
+                    },
+                  ]}
+                  onPress={() => handleToggleViceCaptain(p.id)}
+                  accessibilityRole="checkbox"
+                  accessibilityState={{ checked: Boolean(p.isViceCaptain) }}
+                  accessibilityLabel={`Vice-captain for ${p.name}`}
+                >
+                  <Text
+                    style={[
+                      styles.tagBtnText,
+                      { color: p.isViceCaptain ? Colors.white : textSecondary },
+                    ]}
+                  >
+                    VC
                   </Text>
                 </TouchableOpacity>
 
@@ -405,6 +444,17 @@ const styles = StyleSheet.create({
   },
   cBadgeText: {
     color: Colors.accentHighlight,
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  vcBadge: {
+    backgroundColor: Colors.lightBg,
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    borderRadius: 4,
+  },
+  vcBadgeText: {
+    color: Colors.secondary,
     fontSize: 10,
     fontWeight: '700',
   },

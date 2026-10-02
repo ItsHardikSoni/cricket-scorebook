@@ -3,12 +3,12 @@ import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function TeamsScreen() {
@@ -66,6 +66,7 @@ export default function TeamsScreen() {
         ) : (
           teams.map((team) => {
             const captain = team.players.find((p) => p.isCaptain);
+            const viceCaptain = team.players.find((p) => p.isViceCaptain);
             const wk = team.players.find((p) => p.isWicketkeeper);
 
             return (
@@ -92,6 +93,15 @@ export default function TeamsScreen() {
                         <View style={[styles.roleBadge, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}>
                           <Text style={[styles.roleBadgeText, { color: textSecondary }]}>
                             (C) {captain.name}
+                          </Text>
+                        </View>
+                      )}
+                      {viceCaptain && (
+                        <View
+                          style={[styles.roleBadge, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}
+                        >
+                          <Text style={[styles.roleBadgeText, { color: textSecondary }]}>
+                            (VC) {viceCaptain.name}
                           </Text>
                         </View>
                       )}

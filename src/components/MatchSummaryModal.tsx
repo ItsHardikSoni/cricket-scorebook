@@ -84,7 +84,7 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
   const accentCol = isDarkMode ? Colors.accentDark : Colors.accent;
 
   const handleShare = async () => {
-    let message = `🏏 *Cricket Match Result*\n${team1.name} vs ${team2.name}\nVenue: ${match.venue}\n\n`;
+    let message = `🏏 *Cricket Match Result*\n${team1.name} vs ${team2.name}\nVenue: ${match.venue || 'Not specified'}\n\n`;
     message += `1st Inn: ${innings1BattingTeam.name} - ${calc1.totalRuns}/${calc1.totalWickets} (${calc1.oversFormatted} ov)\n`;
     if (calc2 && innings2BattingTeam) {
       message += `2nd Inn: ${innings2BattingTeam.name} - ${calc2.totalRuns}/${calc2.totalWickets} (${calc2.oversFormatted} ov)\n`;

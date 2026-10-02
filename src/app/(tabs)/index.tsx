@@ -4,11 +4,11 @@ import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 export default function HomeScreen() {
@@ -70,7 +70,7 @@ export default function HomeScreen() {
                 {team1?.name} vs {team2?.name}
               </Text>
               <Text style={[styles.activeVenue, { color: textSecondary }]}>
-                {activeMatch.venue} • {activeMatch.format} ({activeMatch.overs} ov)
+                {activeMatch.venue || 'Ground not specified'} • {activeMatch.format} ({activeMatch.overs} ov)
               </Text>
             </View>
           </View>
@@ -169,7 +169,7 @@ export default function HomeScreen() {
                       {team1?.name} vs {team2?.name}
                     </Text>
                     <Text style={[styles.recentDate, { color: textSecondary }]}>
-                      {m.date} • {m.venue}
+                      {m.date || 'Date not specified'} • {m.venue || 'Ground not specified'}
                     </Text>
                     {m.result && (
                       <Text style={[styles.recentResult, { color: isDark ? Colors.successTextDark : Colors.successText }]}>

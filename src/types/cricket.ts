@@ -22,6 +22,7 @@ export interface Player {
   name: string;
   role?: 'batsman' | 'bowler' | 'all_rounder' | 'wicketkeeper';
   isCaptain?: boolean;
+  isViceCaptain?: boolean;
   isWicketkeeper?: boolean;
 }
 
