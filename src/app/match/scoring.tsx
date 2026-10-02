@@ -79,7 +79,7 @@ export default function LiveScoringScreen() {
     createdAt: 0,
   };
 
-  const isInnings1 = match.status === 'innings1';
+  const isInnings1 = match.status === 'innings1' || match.status === 'innings_break';
   const currentInnings = isInnings1 ? match.innings1 : match.innings2;
 
   if (!currentInnings) {

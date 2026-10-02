@@ -299,7 +299,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     const match = state.getActiveMatch();
     if (!match) return { overCompleted: false, inningsEnded: false, matchEnded: false };
 
-    const isInnings1 = match.status === 'innings1';
+    const isInnings1 = match.status === 'innings1' || (match.status === 'innings_break' && !match.innings2);
     const currentInnings = isInnings1 ? match.innings1 : match.innings2;
     if (!currentInnings) return { overCompleted: false, inningsEnded: false, matchEnded: false };
 
@@ -394,7 +394,8 @@ export const useCricketStore = create<CricketState>((set, get) => ({
         inningsEnded = true;
         updatedInnings.isCompleted = true;
         updatedStatus = 'completed';
-        const wicketsRemaining = (match.team1PlayingXI.length || 11) - 1 - calc.totalWickets;
+        const battingXICount = battingTeam?.players.length || match.team1PlayingXI.length || 11;
+        const wicketsRemaining = Math.max(0, battingXICount - calc.totalWickets - 1);
         matchResult = `${battingTeam?.name || 'Chasing team'} won by ${wicketsRemaining} wicket${wicketsRemaining === 1 ? '' : 's'}`;
       } else if (calc.isAllOut || oversFinished) {
         matchEnded = true;
@@ -405,7 +406,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
         if (calc.totalRuns === targetScore - 1) {
           matchResult = 'Match Tied';
         } else {
-          const runsShort = targetScore - 1 - calc.totalRuns;
+          const runsShort = targetScore - calc.totalRuns;
           matchResult = `${bowlingTeam?.name || 'Defending team'} won by ${runsShort} run${runsShort === 1 ? '' : 's'}`;
         }
       }
@@ -480,7 +481,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     const match = state.getActiveMatch();
     if (!match) return;
 
-    const isInnings1 = match.status === 'innings1';
+    const isInnings1 = match.status === 'innings1' || (match.status === 'innings_break' && !match.innings2);
     const currentInnings = isInnings1 ? match.innings1 : match.innings2;
     if (!currentInnings) return;
 
@@ -507,7 +508,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     const match = state.getActiveMatch();
     if (!match) return;
 
-    const isInnings1 = match.status === 'innings1';
+    const isInnings1 = match.status === 'innings1' || (match.status === 'innings_break' && !match.innings2);
     const currentInnings = isInnings1 ? match.innings1 : match.innings2;
     if (!currentInnings) return;
 
@@ -533,7 +534,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     const match = state.getActiveMatch();
     if (!match) return;
 
-    const isInnings1 = match.status === 'innings1';
+    const isInnings1 = match.status === 'innings1' || (match.status === 'innings_break' && !match.innings2);
     const currentInnings = isInnings1 ? match.innings1 : match.innings2;
     if (!currentInnings) return;
 
@@ -559,7 +560,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     const match = state.getActiveMatch();
     if (!match) return;
 
-    const isInnings1 = match.status === 'innings1';
+    const isInnings1 = match.status === 'innings1' || (match.status === 'innings_break' && !match.innings2);
     const currentInnings = isInnings1 ? match.innings1 : match.innings2;
     if (!currentInnings) return;
 
