@@ -1,16 +1,18 @@
+import { MatchAwardsSection } from '@/components/MatchAwardsSection';
 import { Colors } from '@/constants/colors';
+import { calculateMatchAwards } from '@/engine/matchAwards';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { Match, Team } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
-  Modal,
-  ScrollView,
-  Share,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Modal,
+    ScrollView,
+    Share,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 interface MatchSummaryModalProps {
@@ -73,6 +75,7 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
   const [selectedBowlerId, setSelectedBowlerId] = useState<string>(
     defendingTeam.players[0]?.id || ''
   );
+  const matchAwards = isCompleted ? calculateMatchAwards(match, team1, team2) : [];
 
   const bgModal = isDarkMode ? Colors.darkBg : Colors.white;
   const textPrimary = isDarkMode ? Colors.darkTextPrimary : Colors.secondary;
@@ -88,6 +91,9 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
     }
     if (match.result) {
       message += `\n*Result:* ${match.result}\n`;
+    }
+    for (const award of matchAwards) {
+      message += `${award.title}: ${award.playerName} (${award.teamName}) - ${award.reason}\n`;
     }
     message += `\nScored digitally with Offline Cricket Scorebook`;
 
@@ -134,6 +140,8 @@ export const MatchSummaryModal: React.FC<MatchSummaryModalProps> = ({
                 </Text>
               </View>
             )}
+
+            {isCompleted && <MatchAwardsSection awards={matchAwards} isDarkMode={isDarkMode} />}
 
             {/* Score Summaries */}
             <View style={[styles.scoreSummaryCard, { backgroundColor: isDarkMode ? Colors.darkBgDark : Colors.lightBgSoft, borderColor: borderCol }]}>

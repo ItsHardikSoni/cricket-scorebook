@@ -29,12 +29,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
-      <SafeAreaView style={{ backgroundColor: Colors.primary }} edges={['top']}>
+      <SafeAreaView style={{flex: 1, backgroundColor: Colors.primary }} edges={['top', 'left', 'right', 'bottom']}>
         <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
-        <SafeAreaView
-          style={{ flex: 1, backgroundColor: isDark ? Colors.secondary : Colors.white }}
-          edges={['left', 'right', 'bottom']}
-        >
           <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right'}}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="match/scoring" options={{ headerShown: false, gestureEnabled: false}}/>
@@ -44,7 +40,6 @@ export default function RootLayout() {
             <Stack.Screen name="team/[id]" options={{ headerShown: false}}/>
           </Stack>
         </SafeAreaView>
-      </SafeAreaView>
     </ThemeProvider>
   );
 }

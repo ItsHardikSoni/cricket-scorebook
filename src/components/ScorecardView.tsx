@@ -1,4 +1,6 @@
+import { MatchAwardsSection } from '@/components/MatchAwardsSection';
 import { Colors } from '@/constants/colors';
+import { calculateMatchAwards } from '@/engine/matchAwards';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { Match, Team } from '@/types/cricket';
 import React, { useState } from 'react';
@@ -57,9 +59,12 @@ export const ScorecardView: React.FC<ScorecardViewProps> = ({
 
   const activeCalc = selectedInnings === 1 ? calc1 : calc2 || calc1;
   const activeBattingTeam = selectedInnings === 1 ? innings1BattingTeam : innings2BattingTeam || innings1BattingTeam;
+  const matchAwards = match.status === 'completed' ? calculateMatchAwards(match, team1, team2) : [];
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {match.status === 'completed' && <MatchAwardsSection awards={matchAwards} isDarkMode={isDarkMode} />}
+
       {/* Innings Selector Tabs */}
       <View style={[styles.tabsRow, { backgroundColor: isDarkMode ? Colors.secondary : Colors.lightBg }]}>
         <TouchableOpacity
