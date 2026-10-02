@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -9,7 +10,6 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 
 export default function TeamsScreen() {
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function TeamsScreen() {
           style={[styles.addBtn, { backgroundColor: accentCol }]}
           onPress={() => router.push('/team/new')}
         >
-          <Ionicons name="add" size={20} color="#ffffff" />
+          <Ionicons name="add" size={20} color={Colors.white} />
           <Text style={styles.addBtnText}>Create Team</Text>
         </TouchableOpacity>
       </View>
@@ -89,14 +89,14 @@ export default function TeamsScreen() {
                     </Text>
                     <View style={styles.badgesRow}>
                       {captain && (
-                        <View style={[styles.roleBadge, { backgroundColor: isDark ? '#1e293b' : '#f1f5f9' }]}>
+                        <View style={[styles.roleBadge, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}>
                           <Text style={[styles.roleBadgeText, { color: textSecondary }]}>
                             (C) {captain.name}
                           </Text>
                         </View>
                       )}
                       {wk && (
-                        <View style={[styles.roleBadge, { backgroundColor: isDark ? '#1e293b' : '#f1f5f9' }]}>
+                        <View style={[styles.roleBadge, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}>
                           <Text style={[styles.roleBadgeText, { color: textSecondary }]}>
                             (WK) {wk.name}
                           </Text>
@@ -121,7 +121,7 @@ export default function TeamsScreen() {
                     onPress={() => handleDeleteTeam(team.id, team.name)}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                   >
-                    <Ionicons name="trash-outline" size={16} color="#ef4444" />
+                    <Ionicons name="trash-outline" size={16} color={Colors.trash} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   addBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 13,
     fontWeight: '700',
   },
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 14,
     fontWeight: '800',
   },

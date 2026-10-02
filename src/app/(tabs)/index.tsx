@@ -1,15 +1,15 @@
+import { Colors } from '@/constants/colors';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -97,7 +97,7 @@ export default function HomeScreen() {
               activeOpacity={0.8}
             >
               <Text style={styles.continueBtnText}>Continue</Text>
-              <Ionicons name="arrow-forward" size={16} color="#ffffff" />
+              <Ionicons name="arrow-forward" size={16} color={Colors.white} />
             </TouchableOpacity>
           </View>
         </View>
@@ -115,7 +115,7 @@ export default function HomeScreen() {
               Offline Digital Match Scoring
             </Text>
           </View>
-          <View style={[styles.offlineBadge, { backgroundColor: isDark ? '#1e293b' : '#e0f2fe' }]}>
+          <View style={[styles.offlineBadge, { backgroundColor: isDark ? Colors.darkBg : Colors.lightHighlight }]}>
             <Ionicons name="cloud-offline" size={14} color={accentCol} />
             <Text style={[styles.offlineText, { color: accentCol }]}>Offline</Text>
           </View>
@@ -127,7 +127,7 @@ export default function HomeScreen() {
           onPress={() => router.push('/match/new')}
           activeOpacity={0.85}
         >
-          <Ionicons name="add-circle" size={24} color="#ffffff" />
+          <Ionicons name="add-circle" size={24} color={Colors.white} />
           <Text style={styles.newMatchBtnText}>New Match</Text>
         </TouchableOpacity>
 
@@ -172,7 +172,7 @@ export default function HomeScreen() {
                       {m.date} • {m.venue}
                     </Text>
                     {m.result && (
-                      <Text style={[styles.recentResult, { color: isDark ? '#34d399' : '#059669' }]}>
+                      <Text style={[styles.recentResult, { color: isDark ? Colors.successTextDark : Colors.successText }]}>
                         {m.result}
                       </Text>
                     )}
@@ -231,14 +231,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     marginBottom: 24,
-    shadowColor: '#0284c7',
+    shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 4,
   },
   newMatchBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 18,
     fontWeight: '800',
     letterSpacing: 0.3,
@@ -266,12 +266,12 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#ef4444',
+    backgroundColor: Colors.wicketBg,
   },
   liveText: {
     fontSize: 11,
     fontWeight: '800',
-    color: '#ef4444',
+    color: Colors.wicketRedText,
   },
   viewAllText: {
     fontSize: 12,
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     borderWidth: 1.5,
-    shadowColor: '#000',
+    shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 4,
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   continueBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 14,
     fontWeight: '700',
   },

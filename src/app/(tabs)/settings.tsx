@@ -1,17 +1,17 @@
+import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { MatchFormat } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import {
-  Alert,
-  ScrollView,
-  Share,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    ScrollView,
+    Share,
+    StyleSheet,
+    Switch,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 export default function SettingsScreen() {
   const { settings, updateSettings, resetAllData, matches, teams } = useCricketStore();
   const isDark = settings.darkMode;
@@ -77,7 +77,7 @@ export default function SettingsScreen() {
             <Switch
               value={settings.darkMode}
               onValueChange={(val) => updateSettings({ darkMode: val })}
-              trackColor={{ false: '#cbd5e1', true: accentCol }}
+              trackColor={{ false: Colors.lightBorderSoft, true: accentCol }}
             />
           </View>
         </View>
@@ -108,7 +108,7 @@ export default function SettingsScreen() {
                   style={[
                     styles.fmtBtn,
                     {
-                      backgroundColor: isSelected ? accentCol : isDark ? '#1e293b' : '#f1f5f9',
+                      backgroundColor: isSelected ? accentCol : isDark ? Colors.darkBg : Colors.lightBg,
                       borderColor: isSelected ? accentCol : borderCol,
                     },
                   ]}
@@ -117,7 +117,7 @@ export default function SettingsScreen() {
                   <Text
                     style={[
                       styles.fmtBtnText,
-                      { color: isSelected ? '#ffffff' : textPrimary },
+                      { color: isSelected ? Colors.white : textPrimary },
                     ]}
                   >
                     {fmt}
@@ -142,7 +142,7 @@ export default function SettingsScreen() {
             <Switch
               value={settings.soundVibration}
               onValueChange={(val) => updateSettings({ soundVibration: val })}
-              trackColor={{ false: '#cbd5e1', true: accentCol }}
+              trackColor={{ false: Colors.lightBorderSoft, true: accentCol }}
             />
           </View>
         </View>
@@ -169,9 +169,9 @@ export default function SettingsScreen() {
 
           <TouchableOpacity style={styles.row} onPress={handleResetData}>
             <View style={styles.rowLeft}>
-              <Ionicons name="refresh-outline" size={20} color="#ef4444" />
+              <Ionicons name="refresh-outline" size={20} color={Colors.trash} />
               <View>
-                <Text style={[styles.rowLabel, { color: '#ef4444' }]}>Reset to Sample Data</Text>
+                <Text style={[styles.rowLabel, { color: Colors.trash }]}>Reset to Sample Data</Text>
                 <Text style={[styles.rowSub, { color: textSecondary }]}>
                   Reload sample teams and active match
                 </Text>

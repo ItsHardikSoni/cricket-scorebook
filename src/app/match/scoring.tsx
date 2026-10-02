@@ -7,6 +7,7 @@ import { ScorecardView } from '@/components/ScorecardView';
 import { ScoreHeader } from '@/components/ScoreHeader';
 import { ScoringPad } from '@/components/ScoringPad';
 import { WicketModal } from '@/components/WicketModal';
+import { Colors } from '@/constants/colors';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { useCricketStore } from '@/storage/cricketStore';
 import { ExtraType, WicketDetails } from '@/types/cricket';
@@ -21,7 +22,6 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 
 export default function LiveScoringScreen() {
   const router = useRouter();
@@ -84,8 +84,8 @@ export default function LiveScoringScreen() {
 
   if (!currentInnings) {
     return (
-      <View style={[styles.emptyContainer, { backgroundColor: isDark ? '#090d16' : '#f8fafc' }]}>
-        <Text style={{ color: isDark ? '#fff' : '#000' }}>Preparing innings...</Text>
+      <View style={[styles.emptyContainer, { backgroundColor: isDark ? Colors.screenBgDark : Colors.screenBgLight }]}>
+        <Text style={{ color: isDark ? Colors.white : Colors.black }}>Preparing innings...</Text>
       </View>
     );
   }
@@ -254,13 +254,13 @@ export default function LiveScoringScreen() {
         </TouchableOpacity>
 
         {/* View Switcher: Live Scoring vs Scorecard */}
-        <View style={[styles.switchContainer, { backgroundColor: isDark ? '#1e293b' : '#f1f5f9' }]}>
+        <View style={[styles.switchContainer, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}>
           <TouchableOpacity
             style={[
               styles.switchBtn,
               activeTab === 'live' && {
-                backgroundColor: isDark ? '#0f172a' : '#ffffff',
-                shadowColor: '#000',
+                backgroundColor: isDark ? Colors.darkBgDark : Colors.white,
+                shadowColor: Colors.black,
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.1,
                 shadowRadius: 2,
@@ -286,8 +286,8 @@ export default function LiveScoringScreen() {
             style={[
               styles.switchBtn,
               activeTab === 'scorecard' && {
-                backgroundColor: isDark ? '#0f172a' : '#ffffff',
-                shadowColor: '#000',
+                backgroundColor: isDark ? Colors.darkBgDark : Colors.white,
+                shadowColor: Colors.black,
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.1,
                 shadowRadius: 2,
@@ -452,14 +452,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   goHomeBtn: {
-    backgroundColor: '#0284c7',
+    backgroundColor: Colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 8,
   },
   goHomeText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 15,
     fontWeight: '700',
   },

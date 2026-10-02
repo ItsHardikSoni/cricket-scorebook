@@ -1,9 +1,9 @@
+import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Player } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Colors } from '@/constants/colors';
 import {
     Alert,
     ScrollView,
@@ -155,7 +155,7 @@ export default function CreateTeamScreen() {
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleRemovePlayer(idx)}>
-                <Ionicons name="trash-outline" size={18} color="#ef4444" />
+                <Ionicons name="trash-outline" size={18} color={Colors.trash} />
               </TouchableOpacity>
             </View>
           ))}
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '800',
   },

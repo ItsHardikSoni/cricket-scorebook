@@ -1,18 +1,18 @@
+import { Colors } from '@/constants/colors';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 
 export default function MatchesScreen() {
   const router = useRouter();
@@ -69,7 +69,7 @@ export default function MatchesScreen() {
           style={[styles.addBtn, { backgroundColor: accentCol }]}
           onPress={() => router.push('/match/new')}
         >
-          <Ionicons name="add" size={20} color="#ffffff" />
+          <Ionicons name="add" size={20} color={Colors.white} />
           <Text style={styles.addBtnText}>New</Text>
         </TouchableOpacity>
       </View>
@@ -102,7 +102,7 @@ export default function MatchesScreen() {
               styles.filterTab,
               {
                 backgroundColor:
-                  filter === tab ? accentCol : isDark ? '#1e293b' : '#f1f5f9',
+                  filter === tab ? accentCol : isDark ? Colors.darkBg : Colors.lightBg,
               },
             ]}
             onPress={() => setFilter(tab)}
@@ -110,7 +110,7 @@ export default function MatchesScreen() {
             <Text
               style={[
                 styles.filterTabText,
-                { color: filter === tab ? '#ffffff' : textSecondary },
+                { color: filter === tab ? Colors.white : textSecondary },
               ]}
             >
               {tab.toUpperCase()}
@@ -158,7 +158,7 @@ export default function MatchesScreen() {
                         <Text style={styles.liveTagText}>IN PROGRESS</Text>
                       </View>
                     ) : (
-                      <View style={[styles.doneTag, { backgroundColor: isDark ? '#1e293b' : '#f1f5f9' }]}>
+                      <View style={[styles.doneTag, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}>
                         <Text style={[styles.doneTagText, { color: textSecondary }]}>COMPLETED</Text>
                       </View>
                     )}
@@ -169,7 +169,7 @@ export default function MatchesScreen() {
                     onPress={() => handleDeletePrompt(m.id)}
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
-                    <Ionicons name="trash-outline" size={18} color="#ef4444" />
+                    <Ionicons name="trash-outline" size={18} color={Colors.trash} />
                   </TouchableOpacity>
                 </View>
 
@@ -202,7 +202,7 @@ export default function MatchesScreen() {
                   </View>
 
                   {m.result && (
-                    <Text style={[styles.resultText, { color: isDark ? '#34d399' : '#059669' }]}>
+                    <Text style={[styles.resultText, { color: isDark ? Colors.successTextDark : Colors.successText }]}>
                       {m.result}
                     </Text>
                   )}
@@ -218,7 +218,7 @@ export default function MatchesScreen() {
                         router.push('/match/scoring');
                       }}
                     >
-                      <Ionicons name="play" size={14} color="#ffffff" />
+                      <Ionicons name="play" size={14} color={Colors.white} />
                       <Text style={styles.resumeBtnText}>Resume Scoring</Text>
                     </TouchableOpacity>
                   ) : (
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   addBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 13,
     fontWeight: '700',
   },
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#fee2e2',
+    backgroundColor: Colors.wicketNoticeBgLight,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 6,
@@ -355,12 +355,12 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: '#dc2626',
+    backgroundColor: Colors.wicketRed,
   },
   liveTagText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#dc2626',
+    color: Colors.wicketRedText,
   },
   doneTag: {
     paddingHorizontal: 8,
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   resumeBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 13,
     fontWeight: '700',
   },

@@ -1,7 +1,11 @@
+const primary = '#047857';
+const secondary = '#0F172A';
+const neutral = '#64748B';
+
 export const Colors = {
-  primary: '#047857',
-  secondary: '#0F172A',
-  neutral: '#64748B',
+  primary,
+  secondary,
+  neutral,
   white: '#FFFFFF',
   black: '#000000',
   // Mint theme colors (splash screen)
@@ -14,7 +18,7 @@ export const Colors = {
   gradientEnd: '#0F5538',
   // Dark mode colors
   darkBg: '#1e293b',
-  darkBgDark: '#0f172a',
+  darkBgDark: secondary,
   darkTextPrimary: '#f8fafc',
   darkTextSecondary: '#94a3b8',
   darkBorder: '#334155',
@@ -23,11 +27,11 @@ export const Colors = {
   lightBgSoft: '#f8fafc',
   lightBorder: '#e2e8f0',
   lightBorderSoft: '#cbd5e1',
-  lightHighlight: '#e0f2fe',
+  lightHighlight: '#d1fae5',
   // Accent colors
-  accent: '#0284c7',
-  accentDark: '#38bdf8',
-  accentHighlight: '#0369a1',
+  accent: primary,
+  accentDark: '#34d399',
+  accentHighlight: primary,
   // Ball delivery colors
   wicketBg: '#ef4444',
   wicketBorder: '#dc2626',
@@ -55,7 +59,7 @@ export const Colors = {
   extraBorder: '#d97706',
   byeBg: '#94a3b8',
   byeBgDark: '#475569',
-  byeBorder: '#64748b',
+  byeBorder: neutral,
   // Status colors
   successBg: '#ecfdf5',
   successBgDark: '#064e3b',
@@ -63,7 +67,7 @@ export const Colors = {
   successTextDark: '#34d399',
   successBorder: '#10b981',
   // Additional colors
-  star: '#0284c7',
+  star: primary,
   shadow: '#042015',
   shadowDark: '#000000',
   statusDot: '#8EE6A8',

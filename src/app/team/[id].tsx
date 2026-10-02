@@ -1,17 +1,17 @@
+import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 
 export default function TeamDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -125,7 +125,7 @@ export default function TeamDetailScreen() {
                     autoFocus
                   />
                   <TouchableOpacity onPress={handleSaveTeamName} style={styles.saveNameBtn}>
-                    <Ionicons name="checkmark" size={18} color="#ffffff" />
+                    <Ionicons name="checkmark" size={18} color={Colors.white} />
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -159,7 +159,7 @@ export default function TeamDetailScreen() {
             style={[styles.addBtn, { backgroundColor: accentCol }]}
             onPress={handleAddPlayer}
           >
-            <Ionicons name="add" size={20} color="#ffffff" />
+            <Ionicons name="add" size={20} color={Colors.white} />
             <Text style={styles.addBtnText}>Add</Text>
           </TouchableOpacity>
         </View>
@@ -200,7 +200,7 @@ export default function TeamDetailScreen() {
                   style={[
                     styles.tagBtn,
                     {
-                      backgroundColor: p.isCaptain ? accentCol : isDark ? '#1e293b' : '#f1f5f9',
+                      backgroundColor: p.isCaptain ? accentCol : isDark ? Colors.darkBg : Colors.lightBg,
                     },
                   ]}
                   onPress={() => handleToggleCaptain(p.id)}
@@ -208,7 +208,7 @@ export default function TeamDetailScreen() {
                   <Text
                     style={[
                       styles.tagBtnText,
-                      { color: p.isCaptain ? '#ffffff' : textSecondary },
+                      { color: p.isCaptain ? Colors.white : textSecondary },
                     ]}
                   >
                     C
@@ -221,11 +221,11 @@ export default function TeamDetailScreen() {
                     {
                       backgroundColor: p.isWicketkeeper
                         ? isDark
-                          ? '#15803d'
-                          : '#22c55e'
+                          ? Colors.boundaryBgDark
+                          : Colors.boundaryBg
                         : isDark
-                        ? '#1e293b'
-                        : '#f1f5f9',
+                        ? Colors.darkBg
+                        : Colors.lightBg,
                     },
                   ]}
                   onPress={() => handleToggleWicketkeeper(p.id)}
@@ -233,7 +233,7 @@ export default function TeamDetailScreen() {
                   <Text
                     style={[
                       styles.tagBtnText,
-                      { color: p.isWicketkeeper ? '#ffffff' : textSecondary },
+                      { color: p.isWicketkeeper ? Colors.white : textSecondary },
                     ]}
                   >
                     WK
@@ -244,7 +244,7 @@ export default function TeamDetailScreen() {
                   onPress={() => handleRemove(p.id, p.name)}
                   hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
-                  <Ionicons name="trash-outline" size={16} color="#ef4444" />
+                  <Ionicons name="trash-outline" size={16} color={Colors.trash} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '800',
   },
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   saveNameBtn: {
-    backgroundColor: '#0284c7',
+    backgroundColor: Colors.primary,
     width: 32,
     height: 32,
     borderRadius: 6,
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   addBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 12,
     fontWeight: '700',
   },
@@ -398,24 +398,24 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   cBadge: {
-    backgroundColor: '#e0f2fe',
+    backgroundColor: Colors.lightHighlight,
     paddingHorizontal: 6,
     paddingVertical: 1,
     borderRadius: 4,
   },
   cBadgeText: {
-    color: '#0284c7',
+    color: Colors.accentHighlight,
     fontSize: 10,
     fontWeight: '700',
   },
   wkBadge: {
-    backgroundColor: '#dcfce7',
+    backgroundColor: Colors.successBg,
     paddingHorizontal: 6,
     paddingVertical: 1,
     borderRadius: 4,
   },
   wkBadgeText: {
-    color: '#15803d',
+    color: Colors.boundaryBgDark,
     fontSize: 10,
     fontWeight: '700',
   },

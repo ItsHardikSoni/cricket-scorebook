@@ -5,23 +5,23 @@
 
 import '@/global.css';
 
-import { Platform } from 'react-native';
 import { Colors as AppColors } from '@/constants/colors';
+import { Platform } from 'react-native';
 
 export const Colors = {
   light: {
     text: AppColors.secondary,
     background: AppColors.white,
-    backgroundElement: '#F1F5F9',
-    backgroundSelected: '#E2E8F0',
+    backgroundElement: AppColors.lightBg,
+    backgroundSelected: AppColors.lightBorder,
     textSecondary: AppColors.neutral,
     primary: AppColors.primary,
   },
   dark: {
     text: AppColors.white,
     background: AppColors.secondary,
-    backgroundElement: '#1E293B',
-    backgroundSelected: '#334155',
+    backgroundElement: AppColors.darkBg,
+    backgroundSelected: AppColors.darkBorder,
     textSecondary: AppColors.neutral,
     primary: AppColors.primary,
   },

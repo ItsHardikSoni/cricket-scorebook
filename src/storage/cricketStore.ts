@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { create } from 'zustand';
+import { Colors } from '@/constants/colors';
+import { calculateInnings, determineNextStrike } from '@/engine/scoringEngine';
 import {
   AppSettings,
   Delivery,
@@ -11,7 +11,8 @@ import {
   Team,
   WicketDetails,
 } from '@/types/cricket';
-import { calculateInnings, determineNextStrike } from '@/engine/scoringEngine';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
 import { INITIAL_MATCHES, INITIAL_TEAMS } from './initialData';
 
 const STORAGE_KEYS = {
@@ -167,7 +168,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
       id: newTeamId,
       name,
       shortName: shortName.toUpperCase(),
-      color: color || '#2563eb',
+      color: color || Colors.primary,
       createdAt: Date.now(),
       players: players.map((p, idx) => ({
         ...p,

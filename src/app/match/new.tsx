@@ -1,18 +1,18 @@
+import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { MatchFormat, TossDecision } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import { Colors } from '@/constants/colors';
 
 export default function NewMatchScreen() {
   const router = useRouter();
@@ -164,7 +164,7 @@ export default function NewMatchScreen() {
                   style={[
                     styles.teamSelectCard,
                     {
-                      backgroundColor: team1Id === t.id ? (isDark ? '#0369a1' : '#e0f2fe') : bgCard,
+                      backgroundColor: team1Id === t.id ? (isDark ? Colors.successBgDark : Colors.lightHighlight) : bgCard,
                       borderColor: team1Id === t.id ? accentCol : borderCol,
                     },
                   ]}
@@ -196,7 +196,7 @@ export default function NewMatchScreen() {
                   style={[
                     styles.teamSelectCard,
                     {
-                      backgroundColor: team2Id === t.id ? (isDark ? '#0369a1' : '#e0f2fe') : bgCard,
+                      backgroundColor: team2Id === t.id ? (isDark ? Colors.successBgDark : Colors.lightHighlight) : bgCard,
                       borderColor: team2Id === t.id ? accentCol : borderCol,
                     },
                   ]}
@@ -242,7 +242,7 @@ export default function NewMatchScreen() {
                     style={[
                       styles.formatCard,
                       {
-                        backgroundColor: isSelected ? (isDark ? '#0369a1' : '#e0f2fe') : bgCard,
+                        backgroundColor: isSelected ? (isDark ? Colors.successBgDark : Colors.lightHighlight) : bgCard,
                         borderColor: isSelected ? accentCol : borderCol,
                       },
                     ]}
@@ -254,7 +254,7 @@ export default function NewMatchScreen() {
                     <Text
                       style={[
                         styles.formatTitle,
-                        { color: isSelected ? (isDark ? '#ffffff' : '#0369a1') : textPrimary },
+                        { color: isSelected ? (isDark ? Colors.white : Colors.accentHighlight) : textPrimary },
                       ]}
                     >
                       {fmt.type}
@@ -337,7 +337,7 @@ export default function NewMatchScreen() {
                     <Text
                       style={[
                         styles.tossBtnText,
-                        { color: isSelected ? '#ffffff' : textPrimary },
+                        { color: isSelected ? Colors.white : textPrimary },
                       ]}
                     >
                       {t.name}
@@ -368,7 +368,7 @@ export default function NewMatchScreen() {
                     <Text
                       style={[
                         styles.tossBtnText,
-                        { color: isSelected ? '#ffffff' : textPrimary },
+                        { color: isSelected ? Colors.white : textPrimary },
                       ]}
                     >
                       {dec === 'bat' ? 'Bat First' : 'Bowl First'}
@@ -378,7 +378,7 @@ export default function NewMatchScreen() {
               })}
             </View>
 
-            <View style={[styles.tossSummary, { backgroundColor: isDark ? '#1e293b' : '#f1f5f9' }]}>
+            <View style={[styles.tossSummary, { backgroundColor: isDark ? Colors.darkBg : Colors.lightBg }]}>
               <Ionicons name="information-circle" size={18} color={accentCol} />
               <Text style={[styles.tossSummaryText, { color: textPrimary }]}>
                 {battingFirstTeam?.name} will bat first.
@@ -414,7 +414,7 @@ export default function NewMatchScreen() {
                     ]}
                     onPress={() => setStrikerId(p.id)}
                   >
-                    <Text style={[styles.chipText, { color: isSelected ? '#fff' : textPrimary }]}>
+                    <Text style={[styles.chipText, { color: isSelected ? Colors.white : textPrimary }]}>
                       {p.name}
                     </Text>
                   </TouchableOpacity>
@@ -443,7 +443,7 @@ export default function NewMatchScreen() {
                       ]}
                       onPress={() => setNonStrikerId(p.id)}
                     >
-                      <Text style={[styles.chipText, { color: isSelected ? '#fff' : textPrimary }]}>
+                      <Text style={[styles.chipText, { color: isSelected ? Colors.white : textPrimary }]}>
                         {p.name}
                       </Text>
                     </TouchableOpacity>
@@ -470,7 +470,7 @@ export default function NewMatchScreen() {
                     ]}
                     onPress={() => setBowlerId(p.id)}
                   >
-                    <Text style={[styles.chipText, { color: isSelected ? '#fff' : textPrimary }]}>
+                      <Text style={[styles.chipText, { color: isSelected ? Colors.white : textPrimary }]}>
                       {p.name}
                     </Text>
                   </TouchableOpacity>
@@ -494,7 +494,7 @@ export default function NewMatchScreen() {
           <Ionicons
             name={step === 5 ? 'play' : 'arrow-forward'}
             size={18}
-            color="#ffffff"
+            color={Colors.white}
           />
         </TouchableOpacity>
       </View>
@@ -566,12 +566,12 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#0284c7',
+    backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   teamBadgeText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 12,
     fontWeight: '800',
   },
@@ -668,7 +668,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   continueButtonText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '800',
   },

@@ -1,4 +1,5 @@
 import { ScorecardView } from '@/components/ScorecardView';
+import { Colors } from '@/constants/colors';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
@@ -93,9 +94,9 @@ export default function MatchDetailScreen() {
 
       {/* Match Result / Status Bar */}
       {match.result && (
-        <View style={[styles.resultBanner, { backgroundColor: isDark ? '#064e3b' : '#ecfdf5', borderColor: '#10b981' }]}>
-          <Ionicons name="trophy" size={16} color="#059669" />
-          <Text style={[styles.resultText, { color: isDark ? '#34d399' : '#059669' }]}>
+        <View style={[styles.resultBanner, { backgroundColor: isDark ? Colors.successBgDark : Colors.successBg, borderColor: Colors.successBorder }]}>
+          <Ionicons name="trophy" size={16} color={Colors.successText} />
+          <Text style={[styles.resultText, { color: isDark ? Colors.successTextDark : Colors.successText }]}>
             {match.result}
           </Text>
         </View>
@@ -111,7 +112,7 @@ export default function MatchDetailScreen() {
               router.push('/match/scoring');
             }}
           >
-            <Ionicons name="play" size={16} color="#ffffff" />
+            <Ionicons name="play" size={16} color={Colors.white} />
             <Text style={styles.resumeBtnText}>Resume Live Scoring</Text>
           </TouchableOpacity>
         </View>
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   resumeBtnText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 15,
     fontWeight: '700',
   },
@@ -195,13 +196,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   goBackBtn: {
-    backgroundColor: '#0284c7',
+    backgroundColor: Colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
   },
   goBackText: {
-    color: '#ffffff',
+    color: Colors.white,
     fontSize: 15,
     fontWeight: '700',
   },
