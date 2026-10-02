@@ -70,6 +70,11 @@ export default function MatchesScreen() {
     );
   };
 
+  const handleOpenExportPicker = () => {
+    setSelectedExportMatchId(null);
+    setExportPickerVisible(true);
+  };
+
   const handleExportMatch = async () => {
     const selectedMatch = matches.find((match) => match.id === selectedExportMatchId);
     if (!selectedMatch) return;
@@ -119,27 +124,13 @@ export default function MatchesScreen() {
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: borderCol }]}>
         <Text style={[styles.title, { color: textPrimary }]}>Matches</Text>
-        <View style={styles.headerActions}>
-          <TouchableOpacity
-            style={[styles.exportBtn, { borderColor: borderCol }]}
-            onPress={() => {
-              setSelectedExportMatchId(null);
-              setExportPickerVisible(true);
-            }}
-            accessibilityRole="button"
-            accessibilityLabel="Export match score as PDF"
-          >
-            <Ionicons name="document-text-outline" size={17} color={textPrimary} />
-            <Text style={[styles.exportBtnText, { color: textPrimary }]}>Export PDF</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.addBtn, { backgroundColor: accentCol }]}
-            onPress={() => router.push('/match/new')}
-          >
-            <Ionicons name="add" size={20} color={Colors.white} />
-            <Text style={styles.addBtnText}>New</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles.addBtn, { backgroundColor: accentCol }]}
+          onPress={() => router.push('/match/new')}
+        >
+          <Ionicons name="add" size={20} color={Colors.white} />
+          <Text style={styles.addBtnText}>New</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Search Bar */}
@@ -186,6 +177,20 @@ export default function MatchesScreen() {
           </TouchableOpacity>
         ))}
       </View>
+
+      <TouchableOpacity
+        style={[styles.exportBanner, { backgroundColor: accentCol }]}
+        onPress={handleOpenExportPicker}
+        accessibilityRole="button"
+        accessibilityLabel="Choose a match to export as PDF"
+      >
+        <Ionicons name="document-text-outline" size={22} color={Colors.white} />
+        <View style={styles.exportBannerText}>
+          <Text style={styles.exportBannerTitle}>Export match score as PDF</Text>
+          <Text style={styles.exportBannerSubtitle}>Choose a match to create a full scorebook</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={18} color={Colors.white} />
+      </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
         {filteredMatches.length === 0 ? (
@@ -416,23 +421,30 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
   },
-  headerActions: {
+  exportBanner: {
+    minHeight: 64,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 12,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
   },
-  exportBtn: {
-    minHeight: 38,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderRadius: 8,
+  exportBannerText: {
+    flex: 1,
   },
-  exportBtnText: {
-    fontSize: 12,
+  exportBannerTitle: {
+    color: Colors.white,
+    fontSize: 14,
     fontWeight: '700',
+  },
+  exportBannerSubtitle: {
+    color: Colors.white,
+    fontSize: 11,
+    opacity: 0.82,
+    marginTop: 2,
   },
   addBtn: {
     flexDirection: 'row',

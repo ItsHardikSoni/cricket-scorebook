@@ -153,21 +153,6 @@ export default function SettingsScreen() {
           DATA & BACKUP (OFFLINE)
         </Text>
         <View style={[styles.card, { backgroundColor: bgCard, borderColor: borderCol }]}>
-          <TouchableOpacity style={styles.row} onPress={handleExportData}>
-            <View style={styles.rowLeft}>
-              <Ionicons name="download-outline" size={20} color={accentCol} />
-              <View>
-                <Text style={[styles.rowLabel, { color: textPrimary }]}>Export Match Data</Text>
-                <Text style={[styles.rowSub, { color: textSecondary }]}>
-                  Save backup of matches and teams
-                </Text>
-              </View>
-            </View>
-            <Ionicons name="chevron-forward" size={18} color={textSecondary} />
-          </TouchableOpacity>
-
-          <View style={[styles.divider, { backgroundColor: borderCol }]} />
-
           <TouchableOpacity style={styles.row} onPress={handleResetData}>
             <View style={styles.rowLeft}>
               <Ionicons name="refresh-outline" size={20} color={Colors.trash} />
