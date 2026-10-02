@@ -238,6 +238,14 @@ export default function LiveScoringScreen() {
     );
   };
 
+  const handleSummaryClose = () => {
+    setSummaryModalVisible(false);
+
+    if (match.status === 'completed') {
+      router.replace(`/match/${match.id}`);
+    }
+  };
+
   const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
   const textPrimary = isDark ? Colors.textPrimaryDark : Colors.textPrimaryLight;
   const textSecondary = isDark ? Colors.darkTextSecondary : Colors.neutral;
@@ -398,7 +406,7 @@ export default function LiveScoringScreen() {
         match={match}
         team1={team1}
         team2={team2}
-        onClose={() => setSummaryModalVisible(false)}
+        onClose={handleSummaryClose}
         onStartSecondInnings={startSecondInnings}
         onFinishMatch={() => finishMatch(match.id)}
         isDarkMode={isDark}
