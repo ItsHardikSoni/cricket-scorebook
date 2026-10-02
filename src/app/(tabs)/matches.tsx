@@ -1,17 +1,23 @@
 import { Colors } from '@/constants/colors';
+import { buildMatchPdfHtml } from '@/engine/matchPdf';
 import { calculateInnings } from '@/engine/scoringEngine';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
+import * as Print from 'expo-print';
 import { useRouter } from 'expo-router';
+import * as Sharing from 'expo-sharing';
 import { useState } from 'react';
 import {
-    Alert,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 export default function MatchesScreen() {
@@ -21,6 +27,9 @@ export default function MatchesScreen() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [exportPickerVisible, setExportPickerVisible] = useState(false);
+  const [selectedExportMatchId, setSelectedExportMatchId] = useState<string | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
   const bgCard = isDark ? Colors.cardBgDark : Colors.white;
@@ -60,18 +69,76 @@ export default function MatchesScreen() {
     );
   };
 
+  const handleExportMatch = async () => {
+    const selectedMatch = matches.find((match) => match.id === selectedExportMatchId);
+    if (!selectedMatch) return;
+
+    const team1 = getTeam(selectedMatch.team1Id) || {
+      id: selectedMatch.team1Id,
+      name: 'Team 1',
+      shortName: 'T1',
+      players: [],
+      createdAt: 0,
+    };
+    const team2 = getTeam(selectedMatch.team2Id) || {
+      id: selectedMatch.team2Id,
+      name: 'Team 2',
+      shortName: 'T2',
+      players: [],
+      createdAt: 0,
+    };
+
+    setIsExporting(true);
+    try {
+      const html = buildMatchPdfHtml(selectedMatch, team1, team2);
+      if (Platform.OS === 'web') {
+        await Print.printAsync({ html });
+      } else {
+        const { uri } = await Print.printToFileAsync({ html });
+        if (await Sharing.isAvailableAsync()) {
+          await Sharing.shareAsync(uri, { mimeType: 'application/pdf', UTI: '.pdf' });
+        } else {
+          await Print.printAsync({ html });
+        }
+      }
+      setExportPickerVisible(false);
+      setSelectedExportMatchId(null);
+    } catch (error) {
+      Alert.alert(
+        'Export failed',
+        error instanceof Error ? error.message : 'The match PDF could not be created.'
+      );
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <>
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: borderCol }]}>
         <Text style={[styles.title, { color: textPrimary }]}>Matches</Text>
-        <TouchableOpacity
-          style={[styles.addBtn, { backgroundColor: accentCol }]}
-          onPress={() => router.push('/match/new')}
-        >
-          <Ionicons name="add" size={20} color={Colors.white} />
-          <Text style={styles.addBtnText}>New</Text>
-        </TouchableOpacity>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={[styles.exportBtn, { borderColor: borderCol }]}
+            onPress={() => {
+              setSelectedExportMatchId(null);
+              setExportPickerVisible(true);
+            }}
+            accessibilityRole="button"
+            accessibilityLabel="Export match score as PDF"
+          >
+            <Ionicons name="document-text-outline" size={17} color={textPrimary} />
+            <Text style={[styles.exportBtnText, { color: textPrimary }]}>Export PDF</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.addBtn, { backgroundColor: accentCol }]}
+            onPress={() => router.push('/match/new')}
+          >
+            <Ionicons name="add" size={20} color={Colors.white} />
+            <Text style={styles.addBtnText}>New</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Search Bar */}
@@ -240,6 +307,94 @@ export default function MatchesScreen() {
           })
         )}
       </ScrollView>
+      <Modal
+        visible={exportPickerVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setExportPickerVisible(false)}
+      >
+        <View style={styles.exportOverlay}>
+          <View style={[styles.exportDialog, { backgroundColor: bgCard, borderColor: borderCol }]}>
+            <View style={styles.exportDialogHeader}>
+              <View>
+                <Text style={[styles.exportDialogTitle, { color: textPrimary }]}>Export match</Text>
+                <Text style={[styles.exportDialogSubtitle, { color: textSecondary }]}>Choose a match for the PDF scorebook.</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setExportPickerVisible(false)}
+                accessibilityRole="button"
+                accessibilityLabel="Close match export picker"
+              >
+                <Ionicons name="close" size={22} color={textSecondary} />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={styles.exportMatchList} showsVerticalScrollIndicator={false}>
+              {matches.length === 0 ? (
+                <Text style={[styles.exportEmptyText, { color: textSecondary }]}>There are no matches to export.</Text>
+              ) : (
+                matches.map((match) => {
+                  const selected = selectedExportMatchId === match.id;
+                  const firstTeam = getTeam(match.team1Id);
+                  const secondTeam = getTeam(match.team2Id);
+                  const matchActive = match.status === 'innings1' || match.status === 'innings2' || match.status === 'innings_break';
+                  return (
+                    <TouchableOpacity
+                      key={match.id}
+                      style={[
+                        styles.exportMatchOption,
+                        { borderColor: selected ? accentCol : borderCol, backgroundColor: isDark ? Colors.darkBgDark : Colors.white },
+                      ]}
+                      onPress={() => setSelectedExportMatchId(match.id)}
+                      accessibilityRole="radio"
+                      accessibilityState={{ checked: selected }}
+                    >
+                      <Ionicons
+                        name={selected ? 'radio-button-on' : 'radio-button-off'}
+                        size={20}
+                        color={selected ? accentCol : textSecondary}
+                      />
+                      <View style={styles.exportMatchDetails}>
+                        <Text numberOfLines={1} style={[styles.exportMatchTitle, { color: textPrimary }]}>
+                          {firstTeam?.name || 'Team 1'} vs {secondTeam?.name || 'Team 2'}
+                        </Text>
+                        <Text style={[styles.exportMatchMeta, { color: textSecondary }]}>
+                          {match.date || 'Date not specified'} · {match.venue || 'Venue not specified'}
+                        </Text>
+                      </View>
+                      <Text style={[styles.exportMatchStatus, { color: matchActive ? Colors.wicketRedText : textSecondary }]}>
+                        {matchActive ? 'LIVE' : match.status.toUpperCase()}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })
+              )}
+            </ScrollView>
+
+            <View style={[styles.exportDialogFooter, { borderTopColor: borderCol }]}>
+              <TouchableOpacity
+                style={[styles.cancelExportBtn, { borderColor: borderCol }]}
+                onPress={() => setExportPickerVisible(false)}
+                disabled={isExporting}
+              >
+                <Text style={[styles.cancelExportText, { color: textPrimary }]}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.confirmExportBtn, { backgroundColor: accentCol, opacity: selectedExportMatchId && !isExporting ? 1 : 0.5 }]}
+                onPress={handleExportMatch}
+                disabled={!selectedExportMatchId || isExporting}
+              >
+                {isExporting ? (
+                  <ActivityIndicator size="small" color={Colors.white} />
+                ) : (
+                  <Ionicons name="download-outline" size={17} color={Colors.white} />
+                )}
+                <Text style={styles.confirmExportText}>{isExporting ? 'Preparing PDF' : 'Export PDF'}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       </>
   );
 }
@@ -259,6 +414,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: '800',
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  exportBtn: {
+    minHeight: 38,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  exportBtnText: {
+    fontSize: 12,
+    fontWeight: '700',
   },
   addBtn: {
     flexDirection: 'row',
@@ -432,5 +605,103 @@ const styles = StyleSheet.create({
   scorecardBtnText: {
     fontSize: 13,
     fontWeight: '600',
+  },
+  exportOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    padding: 20,
+  },
+  exportDialog: {
+    width: '100%',
+    maxWidth: 520,
+    maxHeight: '85%',
+    borderWidth: 1,
+    borderRadius: 14,
+    padding: 16,
+  },
+  exportDialogHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  exportDialogTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  exportDialogSubtitle: {
+    fontSize: 12,
+    marginTop: 3,
+  },
+  exportMatchList: {
+    flexShrink: 1,
+    marginTop: 14,
+  },
+  exportEmptyText: {
+    paddingVertical: 20,
+    textAlign: 'center',
+    fontSize: 13,
+  },
+  exportMatchOption: {
+    minHeight: 62,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  exportMatchDetails: {
+    flex: 1,
+    minWidth: 0,
+  },
+  exportMatchTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  exportMatchMeta: {
+    fontSize: 10,
+    marginTop: 3,
+  },
+  exportMatchStatus: {
+    fontSize: 9,
+    fontWeight: '800',
+  },
+  exportDialogFooter: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 8,
+    marginTop: 8,
+    paddingTop: 12,
+    borderTopWidth: 1,
+  },
+  cancelExportBtn: {
+    minHeight: 40,
+    justifyContent: 'center',
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  cancelExportText: {
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  confirmExportBtn: {
+    minHeight: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+  },
+  confirmExportText: {
+    color: Colors.white,
+    fontSize: 12,
+    fontWeight: '700',
   },
 });
