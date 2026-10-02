@@ -1,9 +1,9 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { MatchFormat } from '@/types/cricket';
 import { Ionicons } from '@expo/vector-icons';
 import {
-    Alert,
     ScrollView,
     Share,
     StyleSheet,
@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 export default function SettingsScreen() {
   const { settings, updateSettings, resetAllData, matches, teams } = useCricketStore();
+  const showAlert = useAppAlert();
   const isDark = settings.darkMode;
 
   const bgScreen = isDark ? Colors.screenBgDark : Colors.screenBgLight;
@@ -24,7 +25,7 @@ export default function SettingsScreen() {
   const accentCol = isDark ? Colors.accentDark : Colors.accent;
 
   const handleResetData = () => {
-    Alert.alert(
+    showAlert(
       'Reset All Data',
       'This will permanently delete all saved teams and matches. This cannot be undone.',
       [
@@ -34,7 +35,7 @@ export default function SettingsScreen() {
           style: 'destructive',
           onPress: async () => {
             await resetAllData();
-            Alert.alert('Data Cleared', 'All saved teams and matches have been removed.');
+            showAlert('Data Cleared', 'All saved teams and matches have been removed.');
           },
         },
       ]

@@ -1,3 +1,4 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import type { Player } from '@/types/cricket';
@@ -5,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,6 +19,7 @@ type PlayerRoleEdits = Partial<Pick<Player, 'isCaptain' | 'isViceCaptain' | 'isW
 export default function TeamDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const showAlert = useAppAlert();
   const { teams, updateTeam, addPlayerToTeam, removePlayerFromTeam, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
@@ -58,7 +59,7 @@ export default function TeamDetailScreen() {
   const handleSaveChanges = async () => {
     const name = teamNameInput.trim();
     if (!name) {
-      Alert.alert('Team Name Required', 'Please enter a team name before saving.');
+      showAlert('Team Name Required', 'Please enter a team name before saving.');
       return;
     }
 
@@ -73,7 +74,7 @@ export default function TeamDetailScreen() {
       setPlayerRoleEdits({});
       setEditingName(false);
     } catch {
-      Alert.alert('Save Failed', 'Team changes could not be saved. Please try again.');
+      showAlert('Save Failed', 'Team changes could not be saved. Please try again.');
     } finally {
       setIsSavingChanges(false);
     }
@@ -81,7 +82,7 @@ export default function TeamDetailScreen() {
 
   const handleAddPlayer = async () => {
     if (!newPlayerName.trim()) {
-      Alert.alert('Player Name Required', 'Please enter a name for the new player');
+      showAlert('Player Name Required', 'Please enter a name for the new player');
       return;
     }
     await addPlayerToTeam(team.id, {
@@ -148,10 +149,10 @@ export default function TeamDetailScreen() {
 
   const handleRemove = (playerId: string, playerName: string) => {
     if (team.players.length <= 2) {
-      Alert.alert('Cannot Remove', 'Team must have at least 2 players');
+      showAlert('Cannot Remove', 'Team must have at least 2 players');
       return;
     }
-    Alert.alert('Remove Player', `Remove ${playerName} from ${team.name}?`, [
+    showAlert('Remove Player', `Remove ${playerName} from ${team.name}?`, [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Remove',

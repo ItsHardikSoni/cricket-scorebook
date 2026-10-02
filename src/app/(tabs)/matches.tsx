@@ -1,3 +1,4 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { Colors } from '@/constants/colors';
 import { buildMatchPdfHtml } from '@/engine/matchPdf';
 import { calculateInnings } from '@/engine/scoringEngine';
@@ -9,7 +10,6 @@ import * as Sharing from 'expo-sharing';
 import { useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Modal,
   Platform,
   ScrollView,
@@ -22,6 +22,7 @@ import {
 
 export default function MatchesScreen() {
   const router = useRouter();
+  const showAlert = useAppAlert();
   const { matches, teams, setActiveMatch, deleteMatch, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
@@ -53,7 +54,7 @@ export default function MatchesScreen() {
   });
 
   const handleDeletePrompt = (matchId: string) => {
-    Alert.alert(
+    showAlert(
       'Delete Match',
       'Are you sure you want to permanently delete this match record?',
       [
@@ -104,7 +105,7 @@ export default function MatchesScreen() {
       setExportPickerVisible(false);
       setSelectedExportMatchId(null);
     } catch (error) {
-      Alert.alert(
+      showAlert(
         'Export failed',
         error instanceof Error ? error.message : 'The match PDF could not be created.'
       );

@@ -1,3 +1,4 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Player } from '@/types/cricket';
@@ -5,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-    Alert,
     ScrollView,
     StyleSheet,
     Text,
@@ -16,6 +16,7 @@ import {
 
 export default function CreateTeamScreen() {
   const router = useRouter();
+  const showAlert = useAppAlert();
   const { createTeam, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
@@ -52,7 +53,7 @@ export default function CreateTeamScreen() {
 
   const handleAddPlayer = () => {
     if (!newPlayerName.trim()) {
-      Alert.alert('Player Name Required', 'Please enter a player name');
+      showAlert('Player Name Required', 'Please enter a player name');
       return;
     }
     setPlayers([
@@ -71,25 +72,25 @@ export default function CreateTeamScreen() {
 
   const handleSaveTeam = async () => {
     if (!teamName.trim()) {
-      Alert.alert('Team Name Required', 'Please enter a name for the team');
+      showAlert('Team Name Required', 'Please enter a name for the team');
       return;
     }
     const finalShortName = (shortName.trim() || teamName.slice(0, 3)).toUpperCase();
 
     if (players.length < 2) {
-      Alert.alert('Players Required', 'Please add at least 2 players to the team');
+      showAlert('Players Required', 'Please add at least 2 players to the team');
       return;
     }
     if (!players.some((player) => player.isCaptain)) {
-      Alert.alert('Captain Required', 'Choose a captain before saving the team');
+      showAlert('Captain Required', 'Choose a captain before saving the team');
       return;
     }
     if (!players.some((player) => player.isViceCaptain)) {
-      Alert.alert('Vice-Captain Required', 'Choose a vice-captain before saving the team');
+      showAlert('Vice-Captain Required', 'Choose a vice-captain before saving the team');
       return;
     }
     if (!players.some((player) => player.isWicketkeeper)) {
-      Alert.alert('Wicketkeeper Required', 'Choose a wicketkeeper before saving the team');
+      showAlert('Wicketkeeper Required', 'Choose a wicketkeeper before saving the team');
       return;
     }
 

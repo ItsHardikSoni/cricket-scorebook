@@ -1,3 +1,4 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { MatchFormat, TossDecision } from '@/types/cricket';
@@ -5,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
     ScrollView,
     StyleSheet,
     Text,
@@ -16,6 +16,7 @@ import {
 
 export default function NewMatchScreen() {
   const router = useRouter();
+  const showAlert = useAppAlert();
   const { teams, createMatch, setActiveMatch, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
@@ -70,11 +71,11 @@ export default function NewMatchScreen() {
   const handleNext = () => {
     if (step === 1) {
       if (!team1Id || !team2Id) {
-        Alert.alert('Selection Required', 'Please select both Team 1 and Team 2');
+        showAlert('Selection Required', 'Please select both Team 1 and Team 2');
         return;
       }
       if (team1Id === team2Id) {
-        Alert.alert('Invalid Selection', 'Team 1 and Team 2 cannot be the same');
+        showAlert('Invalid Selection', 'Team 1 and Team 2 cannot be the same');
         return;
       }
       setTossWinnerId(team1Id);
@@ -82,7 +83,7 @@ export default function NewMatchScreen() {
     } else if (step === 2) {
       const numOvers = parseInt(overs, 10);
       if (isNaN(numOvers) || numOvers <= 0) {
-        Alert.alert('Invalid Overs', 'Please enter a valid number of overs (e.g. 20)');
+        showAlert('Invalid Overs', 'Please enter a valid number of overs (e.g. 20)');
         return;
       }
       setStep(3);
@@ -97,11 +98,11 @@ export default function NewMatchScreen() {
 
   const handleStartMatch = async () => {
     if (!strikerId || !nonStrikerId || !bowlerId) {
-      Alert.alert('Required Selection', 'Please select both opening batters and the opening bowler');
+      showAlert('Required Selection', 'Please select both opening batters and the opening bowler');
       return;
     }
     if (strikerId === nonStrikerId) {
-      Alert.alert('Invalid Batters', 'Striker and Non-striker must be different players');
+      showAlert('Invalid Batters', 'Striker and Non-striker must be different players');
       return;
     }
 

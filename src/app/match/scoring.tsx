@@ -1,3 +1,4 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { BatsmanBowlerCard } from '@/components/BatsmanBowlerCard';
 import { BowlerSelectModal } from '@/components/BowlerSelectModal';
 import { ExtrasModal } from '@/components/ExtrasModal';
@@ -15,7 +16,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
-    Alert,
     ScrollView,
     StyleSheet,
     Text,
@@ -25,6 +25,7 @@ import {
 
 export default function LiveScoringScreen() {
   const router = useRouter();
+  const showAlert = useAppAlert();
   const {
     getActiveMatch,
     teams,
@@ -222,7 +223,7 @@ export default function LiveScoringScreen() {
   };
 
   const handleEndMatchPrompt = () => {
-    Alert.alert(
+    showAlert(
       'Finish Match',
       'Are you sure you want to end this match early?',
       [

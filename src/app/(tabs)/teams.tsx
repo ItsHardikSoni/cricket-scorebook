@@ -1,18 +1,19 @@
+import { useAppAlert } from '@/components/AppAlertProvider';
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 
 export default function TeamsScreen() {
   const router = useRouter();
+  const showAlert = useAppAlert();
   const { teams, deleteTeam, settings } = useCricketStore();
   const isDark = settings.darkMode;
 
@@ -24,7 +25,7 @@ export default function TeamsScreen() {
   const accentCol = isDark ? Colors.accentDark : Colors.accent;
 
   const handleDeleteTeam = (teamId: string, teamName: string) => {
-    Alert.alert(
+    showAlert(
       'Delete Team',
       `Are you sure you want to delete ${teamName}? Matches scored with this team will retain their data.`,
       [

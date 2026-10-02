@@ -1,3 +1,4 @@
+import { AppAlertProvider } from '@/components/AppAlertProvider';
 import { AppSplash } from '@/components/AppSplash';
 import { Colors } from '@/constants/colors';
 import { useCricketStore } from '@/storage/cricketStore';
@@ -31,6 +32,7 @@ export default function RootLayout() {
     <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
       <SafeAreaView style={{flex: 1, backgroundColor: Colors.primary }} edges={['top', 'left', 'right', 'bottom']}>
         <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
+        <AppAlertProvider>
           <Stack screenOptions={{ headerShown: false, animation: 'slide_from_right'}}>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="match/scoring" options={{ headerShown: false, gestureEnabled: false}}/>
@@ -39,6 +41,7 @@ export default function RootLayout() {
             <Stack.Screen name="team/new" options={{ headerShown: false, presentation: 'modal'}}/>
             <Stack.Screen name="team/[id]" options={{ headerShown: false}}/>
           </Stack>
+        </AppAlertProvider>
         </SafeAreaView>
     </ThemeProvider>
   );
