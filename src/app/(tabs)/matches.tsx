@@ -99,6 +99,8 @@ export default function MatchesScreen() {
       const html = buildMatchPdfHtml(selectedMatch, team1, team2);
       if (Platform.OS === 'web') {
         await Print.printAsync({ html });
+      } else if (Platform.OS === 'android') {
+        await Print.printAsync({ html });
       } else {
         const { uri } = await Print.printToFileAsync({ html });
         if (await Sharing.isAvailableAsync()) {
